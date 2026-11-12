@@ -284,6 +284,56 @@
   .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  /* ---------- Version mobile (≤ 760 px) ---------- */
+  .t-m,.mcat,.mcat-foot{display:none}
+  @media (max-width:760px){
+    /* Accueil */
+    .hero .portrait{height:64%;left:0;right:0;margin-inline:auto}
+    .hero::before{left:50%;top:27%;width:74vw}
+    .hero .locale{top:92px;padding:10px 12px 10px var(--pad);gap:12px;font-size:13px}
+    .hero .locale .globe{width:38px;height:38px}
+    .hero .locale .globe svg{width:20px;height:20px}
+    .hero .role{top:98px;bottom:auto;right:var(--pad);left:auto;max-width:150px;text-align:right;font-size:17px}
+    .hero .role svg{margin:0 0 10px auto;width:18px}
+    .marquee span{font-size:96px}
+    /* Bouton menu plus discret */
+    .menu-btn{width:50px;height:50px;top:14px;right:14px}
+    .menu-btn span,.menu-btn span::before,.menu-btn span::after{width:18px}
+    /* Projets à la une : catalogue à glisser au lieu du livre 3D */
+    .t-d{display:none}.t-m{display:inline}
+    .desk{height:auto!important}
+    .desk-sticky{position:static;height:auto;padding:84px 0 56px;gap:0}
+    .desk-head{padding:0 var(--pad);margin-bottom:22px}
+    .scene,.book-nav,.desk-progress{display:none!important}
+    .mcat{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:6px var(--pad) 26px;scroll-padding-inline:var(--pad);scrollbar-width:none}
+    .mcat::-webkit-scrollbar{display:none}
+    .mcard{flex:0 0 86%;scroll-snap-align:start;display:flex;flex-direction:column;background:#f6f2ea;color:#141414;border-radius:6px;overflow:hidden;text-decoration:none;
+      box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 34px -14px rgba(70,45,20,.35)}
+    .mcard .ph{position:relative;aspect-ratio:16/9;background:#e9e2d6}
+    .mcard .ph img{width:100%;height:100%;object-fit:cover;display:block}
+    .mcard .ph span{position:absolute;left:12px;bottom:10px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+    .mcard .bd{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;padding:16px 16px 18px;flex:1}
+    .mcard .mn{grid-row:span 2;font-family:Syne;font-weight:700;font-size:52px;line-height:.85;color:var(--accent);letter-spacing:-.04em}
+    .mcard .mc{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;align-self:end}
+    .mcard h3{font-family:Syne;font-weight:500;font-size:22px;line-height:1.05;letter-spacing:-.01em}
+    .mcard p{grid-column:1/-1;font-size:14px;line-height:1.5;color:#5f5b55;margin-top:6px}
+    .mcard .go{grid-column:1/-1;justify-self:start;margin-top:8px;font-size:14px;font-weight:600;border-bottom:1.5px solid currentColor;padding-bottom:2px}
+    .mcat-foot{display:flex;align-items:center;gap:16px;padding:0 var(--pad)}
+    .mcat-n{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .mcat-n b{color:var(--ink);font-weight:600}
+    .mcat-bar{flex:1;height:2px;background:rgba(0,0,0,.1);border-radius:2px;overflow:hidden}
+    .mcat-bar i{display:block;height:100%;width:12.5%;background:var(--accent);transition:width .3s}
+    /* Galerie sur 2 colonnes, légendes compactes */
+    .grid{grid-template-columns:1fr 1fr!important;gap:22px 12px}
+    .card h4{font-size:15px;margin:10px 0 4px;padding-bottom:8px}
+    .card p{font-size:12px}
+    .card p span:last-child{display:none}
+    .filters button{padding:12px 16px;font-size:14px}
+    /* Contact : le bouton rond ne chevauche plus le texte */
+    footer .line{margin:36px 0;padding-bottom:30px}
+    footer .line .mag-wrap{position:static;transform:none}
+  }
+
 </style>
 </head>
 <body>
@@ -353,8 +403,10 @@
   <div class="wrap desk-head">
     <div><p class="eyebrow">Projets à la une</p>
     <h2>Un portfolio à feuilleter</h2></div>
-    <p class="desk-tip">Faites défiler pour tourner les pages, ou cliquez sur le livre.</p>
+    <p class="desk-tip"><span class="t-d">Faites défiler pour tourner les pages, ou cliquez sur le livre.</span><span class="t-m">Glissez pour feuilleter les projets.</span></p>
   </div>
+  <div class="mcat" id="mcat" aria-label="Projets à la une — glissez pour feuilleter"></div>
+  <div class="mcat-foot" aria-hidden="true"><span class="mcat-n"><b id="mcat-i">01</b> / <span id="mcat-t">08</span></span><span class="mcat-bar"><i id="mcat-bar"></i></span></div>
   <div class="scene" id="scene">
     <div class="book closed" id="book" aria-label="Livre des projets à la une">
       <div class="base l" aria-hidden="true"></div><div class="base r" aria-hidden="true"></div>
@@ -607,10 +659,13 @@
   // --- Pages pilotées par le défilement ---
   // La section fait (N + 2) écrans de haut ; le livre reste fixé (sticky) et chaque écran tourne une page.
   const work = document.getElementById('work'), STEPS = N + 2, bar = document.getElementById('bk-progress');
-  const sizeWork = () => { work.style.height = (STEPS * 70 + 30) + 'vh'; };
+  const mq = matchMedia('(max-width:760px)');
+  const sizeWork = () => { work.style.height = mq.matches ? '' : (STEPS * 70 + 30) + 'vh'; };
+  mq.addEventListener('change', () => { sizeWork(); fromScroll(); });
   sizeWork();
   const span = () => work.offsetHeight - innerHeight;
   function fromScroll() {
+    if (mq.matches) return;
     const p = Math.max(0, Math.min(1, -work.getBoundingClientRect().top / span()));
     bar.style.width = (p * 100) + '%';
     const target = Math.min(STEPS - 1, Math.floor(p * STEPS * .999));
@@ -645,6 +700,24 @@
     if (e.key === 'ArrowLeft') { e.preventDefault(); go(page - 1); }
   });
   render(); fromScroll();
+
+  // --- Catalogue à glisser (mobile) ---
+  const mcat = document.getElementById('mcat'), mi = document.getElementById('mcat-i'), mbar = document.getElementById('mcat-bar');
+  document.getElementById('mcat-t').textContent = pad2(N);
+  mcat.innerHTML = FEATURED.map((f, i) => `<a class="mcard" href="${f.href || '#'}" data-i="${i}">
+      <div class="ph"><img src="${img(f.pages[0])}" alt="${f.t}" loading="lazy"><span>p. ${pad2(i * 2 + 2)} — ${f.t}</span></div>
+      <div class="bd"><span class="mn" aria-hidden="true">${pad2(i + 1)}</span><span class="mc">${f.m}</span><h3>${f.t}</h3>
+        <p>${DESC[f.t] || ''}</p><span class="go">${f.href ? 'Voir le projet' : 'Voir les images'} →</span></div></a>`).join('');
+  mcat.addEventListener('click', e => {
+    const a = e.target.closest('.mcard'); if (!a) return;
+    const f = FEATURED[a.dataset.i]; if (f.href) return;
+    e.preventDefault(); open(f.pages.map(p => byPage(p) || { p, t: f.t, s: f.m }));
+  });
+  mcat.addEventListener('scroll', () => {
+    const c = mcat.firstElementChild; if (!c) return;
+    const i = Math.min(N - 1, Math.round(mcat.scrollLeft / (c.offsetWidth + 14)));
+    mi.textContent = pad2(i + 1); mbar.style.width = ((i + 1) / N * 100) + '%';
+  }, { passive: true });
 
   // --- Bandes défilantes ---
   const r1 = ['wok-truck', 'ck09', 'mu-cover', 4, 10, 20, 7, 21, 9], r2 = [23, 'choco6.webp', 'ck13', 15, 5, 18, 24, 17];
@@ -810,6 +883,9 @@
       animate(scene, { opacity: [0, 1], y: [80, 0], scale: [.92, 1] }, { duration: 1.2, ease: EASE, delay: .15 });
       animate(nav, { opacity: [0, 1], y: [20, 0] }, { duration: .8, ease: EASE, delay: .45 });
     }, { amount: .5 });
+
+    const mcards = $$('#mcat .mcard');
+    if (mcards.length) { hide(mcards); inView('#mcat', () => { animate(mcards.slice(0, 3), { opacity: [0, 1], x: [60, 0] }, { duration: .9, ease: EASE, delay: stagger(.08) }); mcards.slice(3).forEach(c => c.style.opacity = 1); }, { amount: .2 }); }
 
     // 5. Prototype ColoKey : texte en cascade, téléphone qui se redresse
     wordsIn($('.proto h2'), { step: .08 });
