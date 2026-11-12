@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musée Dar El Hout — Anas Zouabi</title>
+<meta name="description" content="Re-branding et campagne d'affiches du Musée Océanographique Dar El Hout, par Anas Zouabi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@500;700;800&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#2E3092; --sand:#DFDBBC; --yellow:#F7BB16; --green:#339966; --aqua:#1BEAC3; --orange:#FF6633;
+    --ink:#141414; --paper:#F3F0EB; --muted:#6f6c66; --line:#d8d3cb; --accent:#f26a2e;
+    --pad:clamp(16px,5vw,80px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  body.lock{overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  h1,h2,h3{font-family:Syne,Inter,sans-serif;letter-spacing:-.02em;font-weight:500}
+  .wrap{max-width:1400px;margin:auto}
+  section{padding:clamp(80px,12vw,160px) var(--pad)}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-bottom:28px;display:flex;gap:14px;align-items:center}
+  .eyebrow b{font-family:Syne;font-weight:700;opacity:1}
+  .cursor{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;background:var(--yellow);pointer-events:none;z-index:95;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;mix-blend-mode:difference}
+  .cursor.big{width:64px;height:64px}
+  @media (hover:none){.cursor{display:none}}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:24px var(--pad);z-index:50;color:var(--sand);font-weight:500;transition:color .4s,background .4s}
+  nav.light{color:var(--ink);background:rgba(243,240,235,.86);backdrop-filter:blur(10px)}
+  nav a{display:inline-flex;align-items:center;gap:10px}
+  .back{border:1px solid currentColor;border-radius:999px;padding:12px 20px;font-size:14px}
+  .back:hover{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+  .logo-mini{font-family:Syne;font-weight:700}
+
+  /* Hero */
+  .hero{min-height:100svh;background:var(--blue);color:var(--sand);display:grid;grid-template-columns:1.2fr 1fr;align-items:end;gap:40px;padding:140px var(--pad) 60px;position:relative;overflow:hidden}
+  .hero h1{font-size:clamp(56px,9.5vw,170px);line-height:.88;font-weight:800;white-space:nowrap}
+  .hero h1 span{display:block;color:var(--yellow)}
+  .hero .sub{font-family:'Josefin Sans',sans-serif;font-size:clamp(18px,2vw,26px);letter-spacing:.04em;margin-top:28px;max-width:520px;line-height:1.3;font-weight:300}
+  .hero .mark{justify-self:center;align-self:center;width:min(34vw,360px)}
+  .hero .mark svg{width:100%;overflow:visible}
+  .hero .mark path,.hero .mark line{fill:none;stroke:var(--sand);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.4s cubic-bezier(.6,0,.2,1) forwards}
+  .hero .mark .ar{font-family:'Josefin Sans',sans-serif;fill:var(--sand);font-size:22px;opacity:0;animation:fade 1s 2s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes fade{to{opacity:1}}
+  .meta{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;border-top:1px solid rgba(223,219,188,.3);padding-top:28px;margin-top:20px}
+  .meta small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:8px}
+  .meta p{font-size:15px;line-height:1.5}
+  .scroll-hint{position:absolute;right:var(--pad);top:50%;writing-mode:vertical-rl;font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+  @media (max-width:820px){
+    .hero{grid-template-columns:1fr;align-items:start}
+    .hero .mark{width:44vw;justify-self:start;order:-1}
+    .meta{grid-template-columns:1fr 1fr}
+    .scroll-hint{display:none}
+  }
+
+  /* Intro */
+  .intro{display:grid;grid-template-columns:1fr 2fr;gap:clamp(30px,6vw,100px)}
+  .intro .lead{font-size:clamp(24px,3vw,40px);line-height:1.3}
+  .intro .lead em{font-style:normal;color:var(--blue);font-weight:500}
+  .intro .cols{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:40px;color:var(--muted);font-size:16px;line-height:1.7}
+  @media (max-width:820px){.intro,.intro .cols{grid-template-columns:1fr}}
+
+  /* Bandeau couverture */
+  .cover{padding:0;background:var(--sand);overflow:hidden}
+  .cover img{width:100%;height:auto}
+
+  /* Chapitres */
+  .chap{display:grid;grid-template-columns:1fr 1.6fr;gap:clamp(30px,6vw,100px);align-items:start}
+  .chap h2{font-size:clamp(40px,6vw,88px);line-height:.95;margin-bottom:24px}
+  .chap .txt p{color:var(--muted);font-size:16px;line-height:1.7;max-width:420px}
+  .chap .txt{position:sticky;top:120px}
+  .frame{border-radius:6px;overflow:hidden;cursor:zoom-in;background:#ddd;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .frame:hover{transform:scale(1.01)}
+  .frame img{width:100%;height:auto}
+  .stack{display:grid;gap:24px}
+  .cap{font-size:13px;color:var(--muted);margin-top:10px;display:flex;justify-content:space-between}
+  @media (max-width:820px){.chap{grid-template-columns:1fr}.chap .txt{position:static}}
+
+  /* Construction du logo (interactif) */
+  .build{background:var(--sand);color:var(--blue)}
+  .build-stage{display:flex;align-items:center;justify-content:center;gap:clamp(16px,4vw,60px);margin:50px 0 30px;flex-wrap:wrap}
+  .build-stage svg{width:clamp(90px,12vw,150px);overflow:visible}
+  .build-stage svg *{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;transition:opacity .6s,transform .8s cubic-bezier(.2,.8,.2,1)}
+  .build-stage .op{font-family:Syne;font-size:clamp(36px,5vw,64px);font-weight:500}
+  .build-stage .guides line{stroke:#fff;stroke-width:1.5}
+  .steps{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .steps button{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--blue);color:var(--blue);background:transparent;border-radius:999px;padding:14px 24px;cursor:pointer;transition:.3s;min-height:48px}
+  .steps button.on,.steps button:hover{background:var(--blue);color:var(--sand)}
+  .build .note{text-align:center;max-width:620px;margin:30px auto 0;font-size:17px;line-height:1.6}
+
+  /* Palette */
+  .palette{display:grid;grid-template-columns:repeat(6,1fr);height:min(70vh,560px);margin-top:50px}
+  .sw{position:relative;border:0;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:22px;font:inherit;text-align:left;transition:flex .6s cubic-bezier(.2,.8,.2,1)}
+  .palette{display:flex}
+  .sw{flex:1}
+  .sw:hover,.sw:focus-visible{flex:2.4}
+  .sw svg{position:absolute;top:28px;left:22px;width:46px;overflow:visible;opacity:.95}
+  .sw svg *{fill:none;stroke-width:2.4}
+  .sw b{font-family:Syne;font-size:clamp(16px,1.6vw,22px);font-weight:700}
+  .sw span{font-size:13px;opacity:.8;margin-top:4px;white-space:nowrap}
+  .sw .copied{position:absolute;top:24px;right:22px;font-size:12px;font-weight:600;opacity:0;transition:.3s}
+  .sw.ok .copied{opacity:1}
+  @media (max-width:720px){.palette{flex-direction:column;height:auto}.sw{min-height:96px;flex:none}.sw:hover{flex:none}.sw svg{top:50%;left:auto;right:22px;transform:translateY(-50%);width:32px}}
+
+  /* Affiches */
+  .posters-sec{background:var(--ink);color:var(--sand)}
+  .posters-sec h2{font-size:clamp(48px,8vw,130px);line-height:.92}
+  .posters-sec .lead{max-width:640px;font-size:18px;line-height:1.6;opacity:.8;margin-top:24px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin:44px 0 40px}
+  .filters button{font:inherit;font-size:14px;font-weight:500;color:var(--sand);background:transparent;border:1px solid #3a3a3a;border-radius:999px;padding:12px 20px;cursor:pointer;min-height:44px;transition:.3s}
+  .filters button.on,.filters button:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+  .posters{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,36px)}
+  .poster{cursor:zoom-in;border:0;background:none;padding:0;text-align:left;color:inherit;font:inherit;transition:opacity .4s,transform .4s}
+  .poster .img{overflow:hidden;border-radius:4px;aspect-ratio:1180/1934;background:#222}
+  .poster img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+  .poster:hover img{transform:scale(1.06) rotate(-.6deg)}
+  .poster .info{display:flex;justify-content:space-between;gap:12px;padding:18px 0 4px;border-bottom:1px solid #333}
+  .poster h3{font-size:20px}
+  .poster .info span{font-size:13px;opacity:.6;white-space:nowrap}
+  .poster .tags{font-size:12px;opacity:.55;margin-top:10px;letter-spacing:.04em}
+  .poster.dim{opacity:.18;transform:scale(.97)}
+  @media (max-width:900px){.posters{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.posters{grid-template-columns:1fr}}
+
+  /* Calendrier campagne */
+  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:70px;border-top:1px solid #333}
+  .timeline div{padding:22px 14px 0 0;position:relative}
+  .timeline div::before{content:"";position:absolute;top:-6px;left:0;width:11px;height:11px;border-radius:50%;background:var(--c)}
+  .timeline b{font-family:Syne;font-size:18px;display:block}
+  .timeline span{font-size:13px;opacity:.6}
+  @media (max-width:820px){.timeline{grid-template-columns:1fr 1fr;row-gap:30px}}
+
+  /* Infographie */
+  .info-sec{background:var(--blue);color:var(--sand)}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:start}
+  .info-grid .txt{position:sticky;top:120px}
+  .info-grid h2{font-size:clamp(44px,6.5vw,96px);line-height:.95;margin-bottom:26px}
+  .info-grid .txt>p{font-size:16px;line-height:1.7;opacity:.85;max-width:460px}
+  .facts{list-style:none;margin:36px 0;display:grid;gap:18px;max-width:460px}
+  .facts li{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:baseline;border-top:1px solid rgba(223,219,188,.25);padding-top:16px}
+  .facts b{font-family:Syne;font-size:34px;font-weight:700;color:var(--yellow)}
+  .facts span{font-size:15px;line-height:1.5;opacity:.9}
+  .info-sec .small{font-size:13px;opacity:.7}
+  .info-sec .small a{text-decoration:underline;text-underline-offset:3px}
+  .scroller-wrap{position:relative;max-width:460px;justify-self:center;width:100%}
+  .scroller{height:min(78vh,760px);overflow-y:auto;border-radius:10px;box-shadow:0 30px 60px rgba(0,0,0,.35);scrollbar-width:none;outline:none;background:#2f3192}
+  .scroller::-webkit-scrollbar{display:none}
+  .scroller:focus-visible{box-shadow:0 0 0 3px var(--yellow)}
+  .scroller img{width:100%;height:auto;display:block;cursor:zoom-in}
+  .scroll-bar{position:absolute;right:-16px;top:0;bottom:44px;width:3px;background:rgba(223,219,188,.2);border-radius:3px}
+  .scroll-bar i{display:block;width:100%;height:0;background:var(--yellow);border-radius:3px}
+  .scroll-tip{text-align:center;font-size:13px;opacity:.7;margin-top:16px}
+  .posts{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,1.5vw,20px)}
+  .posts img{width:100%;border-radius:6px;cursor:zoom-in;box-shadow:0 12px 30px rgba(0,0,20,.35),0 0 0 1px rgba(223,219,188,.12);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+  .posts img:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+  @media (max-width:900px){.info-grid{grid-template-columns:1fr}.info-grid .txt{position:static}.posts{grid-template-columns:1fr 1fr}.scroll-bar{display:none}}
+
+  /* Projet suivant */
+  .next{background:var(--blue);color:var(--sand);text-align:center;padding:clamp(100px,14vw,180px) var(--pad)}
+  .next small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+  .next a.big{display:block;font-family:Syne;font-size:clamp(52px,10vw,160px);font-weight:500;line-height:1;margin:20px 0 40px;transition:color .3s}
+  .next a.big:hover{color:var(--yellow)}
+  .pill{display:inline-block;border:1px solid rgba(223,219,188,.4);border-radius:999px;padding:20px 36px;font-weight:500;transition:.3s}
+  .pill:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+
+  /* Lightbox */
+  .lb{position:fixed;inset:0;background:rgba(14,14,14,.95);z-index:80;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
+  .lb.on{opacity:1;pointer-events:auto}
+  .lb header{display:flex;justify-content:space-between;align-items:center;padding:20px var(--pad);color:#fff;gap:20px}
+  .lb header p{font-size:15px}
+  .lb .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:0 var(--pad);min-height:0}
+  .lb .stage img{max-height:100%;max-width:100%;object-fit:contain}
+  .lb .ctrl{display:flex;justify-content:center;gap:14px;padding:20px;align-items:center;color:#aaa;font-size:14px}
+  .lb button{width:52px;height:52px;border-radius:50%;border:1px solid #444;background:transparent;color:#fff;font-size:18px;cursor:pointer}
+  .lb button:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.hero .mark path,.hero .mark line{stroke-dashoffset:0}.hero .mark .ar{opacity:1}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+
+<nav id="nav">
+  <a class="back" href="../#work">← Retour aux projets</a>
+  <a class="logo-mini" href="../">© Anas Zouabi</a>
+</nav>
+
+<!-- Logo réutilisable : arche + cerf-volant (comme dans le brand book) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 120 214">
+    <path d="M0 214V60A60 60 0 0 1 120 60V214Z"/>
+    <path d="M60 28 0 78M60 28l60 50M0 78l80 136M120 78 40 214M60 28V214"/>
+  </symbol>
+</svg>
+
+<header class="hero">
+  <div>
+    <p class="eyebrow"><b>01</b> Identité · Campagne · Signalétique</p>
+    <h1>Dar El<span>Hout</span></h1>
+    <p class="sub">Concept de re-branding du Musée Océanographique : une nouvelle identité, une campagne d'affiches et un système de signalétique.</p>
+  </div>
+  <div class="mark" aria-label="Logo Dar El Hout">
+    <svg viewBox="-10 -10 140 270">
+      <path style="--len:640" d="M0 214V60A60 60 0 0 1 120 60V214Z"/>
+      <line style="--len:80" x1="60" y1="28" x2="0" y2="78"/>
+      <line style="--len:80" x1="60" y1="28" x2="120" y2="78"/>
+      <line style="--len:160" x1="0" y1="78" x2="80" y2="214"/>
+      <line style="--len:160" x1="120" y1="78" x2="40" y2="214"/>
+      <line style="--len:190" x1="60" y1="28" x2="60" y2="214"/>
+      <text class="ar" x="60" y="248" text-anchor="middle">دار الحوت</text>
+    </svg>
+  </div>
+  <div class="meta">
+    <div><small>Client</small><p>Musée Océanographique<br>Dar El Hout</p></div>
+    <div><small>Rôle</small><p>Direction artistique<br>Identité · Illustration</p></div>
+    <div><small>Livrables</small><p>Logo, affiches, infographie,<br>réseaux sociaux, signalétique</p></div>
+    <div><small>Année</small><p>2019</p></div>
+  </div>
+  <span class="scroll-hint">Défiler ↓</span>
+</header>
+
+<section>
+  <div class="wrap intro">
+    <p class="eyebrow" style="color:var(--blue)"><b>Le projet</b></p>
+    <div>
+      <p class="lead reveal">Donner au musée une identité <em>simple, géométrique et chaleureuse</em>, capable de parler à tous les publics, et de porter une saison d'événements autour de la protection de l'océan.</p>
+      <div class="cols">
+        <p>Le logo réunit deux formes : l'arche, porte d'entrée du musée, et le cerf-volant, qui évoque à la fois la voile, le poisson et le mouvement. Le nom arabe دار الحوت (« la maison du poisson ») l'accompagne.</p>
+        <p>L'identité se décline ensuite en six couleurs, une typographie fine et lisible, une série de six affiches illustrées à la main et un système de pictogrammes pour orienter les visiteurs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cover" aria-label="La campagne d'affiches">
+  <img src="../assets/img/mu-cover.jpg" alt="Les six affiches de la campagne Dar El Hout" class="zoom" data-cap="La campagne d'affiches 2019">
+</section>
+
+<!-- 02 Logo -->
+<section>
+  <div class="wrap chap">
+    <div class="txt">
+      <p class="eyebrow"><b>02</b> Logo</p>
+      <h2 class="reveal">Recherches<br>& logotype</h2>
+      <p>Plusieurs pistes ont été explorées, autour de la vague, du poisson et de l'architecture du lieu. La piste retenue combine l'arche et le cerf-volant dans une construction à la ligne fine, qui reste lisible en très petit comme en grand format.</p>
+    </div>
+    <div class="stack">
+      <div><div class="frame zoom-wrap"><img class="zoom" src="../assets/img/mu2.jpg" alt="Propositions de logos" data-cap="Propositions de logos" loading="lazy"></div><p class="cap"><span>Propositions de logos</span><span>01 / 03</span></p></div>
+      <div><div class="frame"><img class="zoom" src="../assets/img/mu3.jpg" alt="Logotype choisi : arche + cerf-volant" data-cap="Logotype choisi" loading="lazy"></div><p class="cap"><span>Logotype choisi</span><span>02 / 03</span></p></div>
+      <div><div class="frame"><img class="zoom" src="../assets/img/mu5.jpg" alt="Le logo en négatif et en positif" data-cap="Versions négative et positive" loading="lazy"></div><p class="cap"><span>Versions négative et positive</span><span>03 / 03</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Construction interactive -->
+<section class="build">
+  <div class="wrap">
+    <p class="eyebrow" style="justify-content:center"><b>03</b> Construction</p>
+    <h2 class="reveal" style="text-align:center;font-size:clamp(40px,6vw,88px)">L'arche + le cerf-volant</h2>
+    <div class="build-stage" aria-hidden="true">
+      <svg viewBox="-4 -4 128 222" id="b-arch"><path d="M0 214V60A60 60 0 0 1 120 60V214Z"/></svg>
+      <span class="op">+</span>
+      <svg viewBox="-4 -4 128 222" id="b-kite"><path d="M60 28 0 78M60 28l60 50M0 78l80 136M120 78 40 214M60 28V214M40 214h40"/></svg>
+      <span class="op">=</span>
+      <svg viewBox="-4 -4 128 222" id="b-full"><use href="#mark"/></svg>
+    </div>
+    <div class="steps" role="group" aria-label="Étapes de construction">
+      <button data-step="1" class="on">1 · L'arche</button>
+      <button data-step="2">2 · Le cerf-volant</button>
+      <button data-step="3">3 · Le logo</button>
+    </div>
+    <p class="note" id="b-note">L'arche représente la porte du musée : un lieu ouvert, accueillant, qui invite à entrer et à découvrir.</p>
+  </div>
+</section>
+
+<!-- 04 Couleurs -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow"><b>04</b> Couleurs</p>
+    <div class="chap" style="align-items:end">
+      <h2 class="reveal" style="margin:0">Six couleurs,<br>une saison</h2>
+      <p style="color:var(--muted);font-size:16px;line-height:1.7;max-width:480px">Chaque événement de la campagne reçoit sa couleur, tirée de l'océan et du littoral. Survolez une couleur pour l'agrandir, cliquez pour copier son code.</p>
+    </div>
+  </div>
+  <div class="palette" id="palette"></div>
+</section>
+
+<!-- 05 Typographie -->
+<section style="padding-top:0">
+  <div class="wrap chap">
+    <div class="txt">
+      <p class="eyebrow"><b>05</b> Typographie</p>
+      <h2 class="reveal">Une typo<br>fine et ouverte</h2>
+      <p>Une linéale géométrique à la graisse légère, en écho au tracé du logo, pour les titres comme pour les textes. Elle se marie avec un caractère arabe au dessin tout aussi simple.</p>
+    </div>
+    <div><div class="frame"><img class="zoom" src="../assets/img/mu6.jpg" alt="Typographie de l'identité" data-cap="Typographie" loading="lazy"></div></div>
+  </div>
+</section>
+
+<!-- 06 Affiches -->
+<section class="posters-sec" id="affiches">
+  <div class="wrap">
+    <p class="eyebrow"><b>06</b> Campagne</p>
+    <h2 class="reveal">Six affiches<br>pour l'océan</h2>
+    <p class="lead">Une série illustrée au trait blanc, où un grand mot jaune traverse chaque affiche comme une vague. Une couleur par thème, pour une saison d'événements de juillet à septembre 2019.</p>
+    <div class="filters" id="pfilters" role="group" aria-label="Filtrer les affiches">
+      <button class="on" data-f="all">Toutes</button>
+      <button data-f="expo">Expositions</button>
+      <button data-f="action">Actions</button>
+      <button data-f="talk">Conférences & ateliers</button>
+    </div>
+    <div class="posters" id="posters"></div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- 07 Infographie & réseaux sociaux -->
+<section class="info-sec" id="infographie">
+  <div class="wrap info-grid">
+    <div class="txt">
+      <p class="eyebrow"><b>07</b> Infographie · Réseaux sociaux</p>
+      <h2 class="reveal">Les chiffres<br>de la pollution</h2>
+      <p>Une infographie verticale, « Les aquariums du monde contre les déchets marins », qui raconte en chiffres l'impact du plastique sur l'océan, puis donne des gestes simples pour agir. Elle se décline en une série de visuels « Le saviez-vous ? » pour Instagram et Facebook.</p>
+      <ul class="facts" aria-label="Quelques chiffres de l'infographie">
+        <li><b>1,5 M</b><span>d'animaux tués chaque année par les déchets aquatiques</span></li>
+        <li><b>90 %</b><span>des oiseaux de mer ont du plastique dans l'estomac</span></li>
+        <li><b>70 %</b><span>des déchets flottants finissent par couler</span></li>
+      </ul>
+      <p class="small">Publié sur Behance en septembre 2019 · <a href="https://www.behance.net/gallery/85411315/Water-pollution-Infographics" target="_blank" rel="noopener">Voir le projet ↗</a></p>
+    </div>
+    <div class="scroller-wrap">
+      <div class="scroller" id="scroller" tabindex="0" aria-label="Infographie : faites défiler pour la parcourir">
+        <img class="zoom" src="../assets/img/eau1.jpg" alt="Infographie : les aquariums du monde contre les déchets marins" data-cap="Infographie — Les aquariums du monde contre les déchets marins" loading="lazy">
+      </div>
+      <div class="scroll-bar"><i id="scroll-bar"></i></div>
+      <p class="scroll-tip">Faites défiler l'infographie ↓</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow" style="margin-top:90px"><b>Série</b> « Le saviez-vous ? »</p>
+    <div class="posts">
+      <img class="zoom" src="../assets/img/eau2.jpg" alt="Le saviez-vous ? 1,5 million d'animaux tués par les déchets aquatiques" data-cap="Le saviez-vous ? — 1,5 million d'animaux" loading="lazy">
+      <img class="zoom" src="../assets/img/eau3.jpg" alt="Le saviez-vous ? 90 % des oiseaux de mer ont du plastique dans l'estomac" data-cap="Le saviez-vous ? — 90 % des oiseaux de mer" loading="lazy">
+      <img class="zoom" src="../assets/img/eau4.jpg" alt="Le saviez-vous ? 70 % des déchets flottants finissent par couler" data-cap="Le saviez-vous ? — 70 % des déchets coulent" loading="lazy">
+      <img class="zoom" src="../assets/img/eau5.jpg" alt="Le saviez-vous ? Durée de biodégradation" data-cap="Le saviez-vous ? — Durée de biodégradation" loading="lazy">
+      <img class="zoom" src="../assets/img/eau6.jpg" alt="Il est temps d'agir !" data-cap="Il est temps d'agir !" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 08 Signalétique -->
+<section>
+  <div class="wrap chap">
+    <div class="txt">
+      <p class="eyebrow"><b>08</b> Signalétique</p>
+      <h2 class="reveal">Se repérer<br>dans le musée</h2>
+      <p>Une famille de pictogrammes bilingues, dessinés avec le même trait que le logo, en version claire et foncée pour guider les visiteurs : accueil, salles, sanitaires, accessibilité.</p>
+    </div>
+    <div class="stack">
+      <div class="frame"><img class="zoom" src="../assets/img/mu7.jpg" alt="Pictogrammes de signalétique" data-cap="Signalétique" loading="lazy"></div>
+      <div class="frame"><img class="zoom" src="../assets/img/p05.jpg" alt="Déclinaison digitale de la campagne" data-cap="Campagne digitale" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="next">
+  <small>Projet suivant</small>
+  <a class="big" href="../projet-chocolat/">Orange Confite →</a>
+  <a class="pill" href="../#gallery">Voir toutes les réalisations</a>
+</section>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image agrandie">
+  <header><p id="lb-cap"></p><button id="lb-close" aria-label="Fermer">✕</button></header>
+  <div class="stage"><img id="lb-img" alt=""></div>
+  <div class="ctrl"><button id="lb-prev" aria-label="Précédente">←</button><span id="lb-count"></span><button id="lb-next" aria-label="Suivante">→</button></div>
+</div>
+
+<script>
+(() => {
+  // Palette (codes du brand book ; le bleu est noté #E3092 dans le PDF, c'est #2E3092)
+  const COLORS = [
+    { hex: '#2E3092', name: 'Bleu profond', fg: '#DFDBBC' },
+    { hex: '#DFDBBC', name: 'Sable', fg: '#2E3092' },
+    { hex: '#F7BB16', name: 'Soleil', fg: '#2E3092' },
+    { hex: '#339966', name: 'Algue', fg: '#2E3092' },
+    { hex: '#1BEAC3', name: 'Lagon', fg: '#2E3092' },
+    { hex: '#FF6633', name: 'Corail', fg: '#2E3092' },
+  ];
+  const pal = document.getElementById('palette');
+  pal.innerHTML = COLORS.map(c => `<button class="sw" style="background:${c.hex};color:${c.fg}" data-hex="${c.hex}" aria-label="Copier ${c.name} ${c.hex}">
+      <svg viewBox="-4 -4 128 222" style="stroke:${c.fg}"><use href="#mark"/></svg>
+      <span class="copied">Copié ✓</span><b>${c.name}</b><span>${c.hex}</span></button>`).join('');
+  pal.addEventListener('click', e => {
+    const b = e.target.closest('.sw'); if (!b) return;
+    try { navigator.clipboard.writeText(b.dataset.hex); } catch {}
+    b.classList.add('ok'); setTimeout(() => b.classList.remove('ok'), 1200);
+  });
+
+  // Affiches
+  const POSTERS = [
+    { n: 1, t: 'Plages', s: 'Nettoyage des plages', d: '27 → 30 juil.', f: 'action', c: '#2E3092', tags: 'Collecte · Tri · Sensibilisation' },
+    { n: 2, t: 'Musée', s: 'Le musée océanographique', d: 'Toute la saison', f: 'expo', c: '#1F6B6B', tags: 'Expositions · Recherche · Éducation' },
+    { n: 3, t: 'Plastique', s: 'Plastique en mer', d: '14 → 28 août', f: 'expo', c: '#8E2B2E', tags: 'Exposition · Installation · Témoignages' },
+    { n: 4, t: 'Océan', s: 'Océan en danger', d: '5 sept.', f: 'talk', c: '#4B2C9A', tags: 'Conférence & débat' },
+    { n: 5, t: 'Ateliers', s: 'Ateliers éco-responsables', d: '7 sept.', f: 'talk', c: '#E0601F', tags: 'DIY · Recyclage · Zéro déchet' },
+    { n: 6, t: 'Biodiversité', s: 'Biodiversité marine', d: '22 sept.', f: 'expo', c: '#2E3092', tags: 'Espèces · Habitats · Préservation' },
+  ];
+  const grid = document.getElementById('posters');
+  grid.innerHTML = POSTERS.map(p => `<button class="poster reveal" data-f="${p.f}" data-src="../assets/img/aff${p.n}.jpg" data-cap="${p.s} — ${p.d}">
+      <div class="img"><img src="../assets/img/aff${p.n}.jpg" alt="Affiche ${p.s}" loading="lazy"></div>
+      <div class="info"><h3>${p.t}</h3><span>${p.d}</span></div><p class="tags">${p.tags}</p></button>`).join('');
+  document.getElementById('timeline').innerHTML = POSTERS.map(p => `<div style="--c:${p.c === '#2E3092' ? '#F7BB16' : p.c}"><b>${p.t}</b><span>${p.d}</span></div>`).join('');
+  document.getElementById('pfilters').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#pfilters button').forEach(x => x.classList.toggle('on', x === b));
+    grid.querySelectorAll('.poster').forEach(p => p.classList.toggle('dim', b.dataset.f !== 'all' && p.dataset.f !== b.dataset.f));
+  });
+
+  // Construction du logo, étape par étape
+  const NOTES = {
+    1: "L'arche représente la porte du musée : un lieu ouvert, accueillant, qui invite à entrer et à découvrir.",
+    2: 'Le cerf-volant évoque la voile, le poisson et le mouvement de la mer. Ses lignes se croisent comme une queue de poisson.',
+    3: "Superposés dans la même grille, ils forment un signe unique, simple à reproduire, accompagné du nom دار الحوت.",
+  };
+  const arch = document.getElementById('b-arch'), kite = document.getElementById('b-kite'), full = document.getElementById('b-full');
+  function step(n) {
+    arch.style.opacity = 1; kite.style.opacity = n >= 2 ? 1 : .15; full.style.opacity = n >= 3 ? 1 : .15;
+    document.querySelectorAll('.steps button').forEach(b => b.classList.toggle('on', +b.dataset.step === n));
+    document.getElementById('b-note').textContent = NOTES[n];
+  }
+  document.querySelector('.steps').addEventListener('click', e => { const b = e.target.closest('[data-step]'); if (b) step(+b.dataset.step); });
+  step(1);
+  // Avance toute seule quand la section apparaît
+  let auto = false;
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !auto) { auto = true; setTimeout(() => step(2), 1400); setTimeout(() => step(3), 2800); }
+  }), { threshold: .5 }).observe(document.querySelector('.build'));
+
+  // Lightbox (toutes les images de la page)
+  const items = () => [...document.querySelectorAll('.zoom, .poster')].map(el => ({ src: el.dataset.src || el.src, cap: el.dataset.cap || el.alt }));
+  const lb = document.getElementById('lb'); let list = [], idx = 0;
+  const show = () => { document.getElementById('lb-img').src = list[idx].src; document.getElementById('lb-img').alt = list[idx].cap; document.getElementById('lb-cap').textContent = list[idx].cap; document.getElementById('lb-count').textContent = `${idx + 1} / ${list.length}`; };
+  const open = el => { list = items(); const src = el.dataset.src || el.src; idx = Math.max(0, list.findIndex(i => i.src === src)); show(); lb.classList.add('on'); document.body.classList.add('lock'); };
+  const close = () => { lb.classList.remove('on'); document.body.classList.remove('lock'); };
+  document.addEventListener('click', e => { const z = e.target.closest('.poster') || (e.target.classList.contains('zoom') ? e.target : null); if (z) open(z); });
+  document.getElementById('lb-close').onclick = close;
+  document.getElementById('lb-prev').onclick = () => { idx = (idx - 1 + list.length) % list.length; show(); };
+  document.getElementById('lb-next').onclick = () => { idx = (idx + 1) % list.length; show(); };
+  lb.addEventListener('click', e => { if (e.target.classList.contains('stage')) close(); });
+  addEventListener('keydown', e => { if (!lb.classList.contains('on')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click(); if (e.key === 'ArrowRight') document.getElementById('lb-next').click(); });
+
+  // Barre de progression de l'infographie
+  const sc = document.getElementById('scroller'), sb = document.getElementById('scroll-bar');
+  sc.addEventListener('scroll', () => { sb.style.height = (sc.scrollTop / (sc.scrollHeight - sc.clientHeight) * 100) + '%'; }, { passive: true });
+
+  // Nav claire après le héros, curseur, apparitions
+  const nav = document.getElementById('nav'), hero = document.querySelector('.hero');
+  addEventListener('scroll', () => nav.classList.toggle('light', scrollY > hero.offsetHeight - 80), { passive: true });
+  const cursor = document.getElementById('cursor');
+  addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+  document.addEventListener('mouseover', e => cursor.classList.toggle('big', !!e.target.closest('a,button,.zoom')));
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

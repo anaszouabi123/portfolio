@@ -1,0 +1,8 @@
+# Fichiers locaux, non publiés
+.claude/
+# PDF sources des brand books (images déjà extraites dans assets/img)
+assets/colokey.pdf
+assets/musee.pdf
+assets/stamp.pdf
+Thumbs.db
+.DS_Store
