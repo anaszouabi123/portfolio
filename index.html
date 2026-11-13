@@ -539,6 +539,7 @@
   const FEATURED = [
     { t: 'Wok & Roll', m: 'Identité · Food truck', pages: ['wok-cover'], href: 'projet-wokandroll/' },
     { t: 'Colo-Key', m: 'Brand book · App de colocation', pages: ['ck09'], href: 'projet-colokey/' },
+    { t: 'Lou Coif', m: 'Identité · UI Design · Prototype', pages: ['lc1'], href: 'projet-loucoif/' },
     { t: 'Musée Océanographique', m: 'Re-branding · Affiches · Signalétique', pages: ['mu-cover'], href: 'musee/' },
     { t: "Galuch'Art", m: 'Direction artistique', pages: [10] },
     { t: 'Rubbish Cube', m: 'Identité graphique', pages: [7] },
@@ -551,6 +552,8 @@
   const ALL = [
     { p: 'wok-cover', t: 'Wok & Roll', s: 'Identité de food truck', c: 'design', href: 'projet-wokandroll/' },
     { p: 'wok-truck', t: 'Wok & Roll', s: 'Food truck & packaging', c: 'design', href: 'projet-wokandroll/' },
+    { p: 'lc1', t: 'Lou Coif', s: 'Identité, site web & admin', c: 'design', href: 'projet-loucoif/' },
+    { p: 'lc-site-home', t: 'Lou Coif', s: 'Site de réservation', c: 'design', href: 'projet-loucoif/' },
     { p: 'ck09', t: 'Colo-Key', s: 'Identité de marque', c: 'design', href: 'projet-colokey/' },
     { p: 'ck12', t: 'Colo-Key', s: 'Logotype — 2e proposition', c: 'design', href: 'projet-colokey/#d2' },
     { p: 'ck07', t: 'Colo-Key', s: 'Illustrations', c: 'design', href: 'projet-colokey/' },
@@ -611,6 +614,7 @@
   const DESC = {
     'Wok & Roll': "Identité complète d'un food truck de cuisine chinoise de rue : logo, packaging, véhicule et menu.",
     'Colo-Key': "Une marque et une application pour une colocation organisée, du brand book au prototype.",
+    'Lou Coif': "Barber studio urbain : brand book, site de réservation et prototype interactif de l'espace admin.",
     'Musée Océanographique': "Re-branding Dar El Hout : logotype, campagne de six affiches, infographie et signalétique.",
     "Galuch'Art": "Direction artistique, identité graphique et photographie produit.",
     'Rubbish Cube': "Construction du logotype et identité graphique en noir et blanc.",
@@ -703,7 +707,7 @@
 
   // --- Catalogue à glisser (mobile) ---
   const mcat = document.getElementById('mcat'), mi = document.getElementById('mcat-i'), mbar = document.getElementById('mcat-bar');
-  document.getElementById('mcat-t').textContent = pad2(N);
+  document.getElementById('mcat-t').textContent = pad2(N); mbar.style.width = (100 / N) + '%';
   mcat.innerHTML = FEATURED.map((f, i) => `<a class="mcard" href="${f.href || '#'}" data-i="${i}">
       <div class="ph"><img src="${img(f.pages[0])}" alt="${f.t}" loading="lazy"><span>p. ${pad2(i * 2 + 2)} — ${f.t}</span></div>
       <div class="bd"><span class="mn" aria-hidden="true">${pad2(i + 1)}</span><span class="mc">${f.m}</span><h3>${f.t}</h3>

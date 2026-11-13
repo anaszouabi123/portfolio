@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lou Coif — Anas Zouabi</title>
+<meta name="description" content="Lou Coif Barber Studio : identité de marque, site de réservation et interface d'administration, par Anas Zouabi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#FF7900; --ink:#111; --ink2:#171717; --ink3:#1E1E1E; --cream:#F4E9D8; --ash:#BDBDBD; --mute:#8A8A8A;
+    --line:rgba(244,233,216,.12); --pad:clamp(16px,5vw,80px); --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:Montserrat,system-ui,sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  body.lock{overflow:hidden}
+  a{color:inherit}
+  img{display:block;max-width:100%;height:auto}
+  :focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1360px;margin:auto}
+  section{padding:clamp(80px,11vw,150px) var(--pad)}
+  .disp{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em}
+  .eyebrow{display:flex;gap:14px;align-items:center;font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;margin-bottom:22px;color:var(--brand)}
+  .eyebrow::after{content:"";width:40px;height:2px;background:currentColor}
+  h2{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:clamp(52px,7.4vw,112px);line-height:.9;text-transform:uppercase;margin-bottom:26px;color:#fff}
+  h2 em{font-style:normal;color:var(--brand)}
+  .lead{font-size:clamp(16px,1.4vw,19px);line-height:1.7;max-width:600px;color:var(--ash)}
+  .cursor{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;pointer-events:none;z-index:95;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:difference;background:#fff}
+  .cursor.big{width:60px;height:60px}
+  @media (hover:none){.cursor{display:none}}
+
+  nav{position:fixed;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:20px var(--pad);z-index:50;transition:background .35s}
+  nav.solid{background:rgba(17,17,17,.88);backdrop-filter:blur(10px)}
+  nav a{text-decoration:none;font-weight:600}
+  .back{display:inline-flex;align-items:center;min-height:44px;border:1.5px solid currentColor;border-radius:999px;padding:0 20px;font-size:14px;transition:background .25s,color .25s,border-color .25s}
+  .back:hover{background:var(--brand);border-color:var(--brand);color:var(--ink)}
+  .copy{font-size:13px;letter-spacing:.3em;text-transform:uppercase}
+
+  /* Héros */
+  .hero{min-height:100svh;display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(30px,5vw,80px);align-items:center;padding:130px var(--pad) 60px;position:relative}
+  .hero::before{content:"";position:absolute;right:-10vw;top:10%;width:55vw;height:55vw;background:radial-gradient(closest-side,rgba(255,121,0,.18),transparent);pointer-events:none}
+  .hero .logo{font-family:UnifrakturMaguntia,serif;font-size:clamp(80px,11vw,170px);line-height:.85;color:#fff}
+  .hero .bs{display:flex;align-items:center;gap:14px;margin-top:14px;font-size:clamp(11px,1vw,14px);font-weight:600;letter-spacing:.42em;color:var(--ash)}
+  .hero .bs::before,.hero .bs::after{content:"";width:34px;height:1.5px;background:currentColor}
+  .hero .tag{margin-top:30px;font-family:'Bebas Neue';font-size:clamp(28px,3vw,44px);line-height:1;color:var(--brand)}
+  .hero .sub{font-size:clamp(16px,1.4vw,19px);max-width:480px;margin-top:16px;color:var(--ash)}
+  .hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+  .hero .shot{transform:rotate(1.6deg);transition:transform .8s var(--ease)}
+  .hero .shot:hover{transform:rotate(0) scale(1.02)}
+  .meta{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;border-top:1px solid var(--line);padding-top:26px}
+  .meta small{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+  .meta p{font-size:15px;line-height:1.5}
+  @media (max-width:860px){.hero{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;background:var(--brand);color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;border:0;cursor:pointer;transition:background .25s,transform .25s}
+  .btn:hover{background:#FF8C24;transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line)}
+  .btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--brand)}
+
+  .frame{border-radius:10px;overflow:hidden;cursor:zoom-in;background:var(--ink2);box-shadow:0 0 0 1px var(--line),0 30px 60px -30px rgba(0,0,0,.9)}
+  .frame img{width:100%;transition:transform .8s var(--ease)}
+  .frame:hover img{transform:scale(1.015)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+  @media (max-width:860px){.grid2{grid-template-columns:1fr}}
+
+  /* Piliers */
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);margin-top:50px;border-top:1px solid var(--line)}
+  .pillar{padding:26px 22px 0 0;border-right:1px solid var(--line)}
+  .pillar+.pillar{padding-left:22px}
+  .pillar:last-child{border-right:0}
+  .pillar svg{width:36px;height:36px;stroke:var(--brand);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .pillar b{display:block;font-family:'Bebas Neue';font-weight:400;font-size:30px;line-height:1;margin:16px 0 6px;color:#fff}
+  .pillar p{font-size:15px;color:var(--ash)}
+  .quote{font-family:'Bebas Neue';font-size:clamp(40px,5vw,72px);line-height:.95;margin-top:30px;color:#fff}
+  .quote span{color:var(--brand)}
+  @media (max-width:860px){.pillars{grid-template-columns:1fr 1fr}.pillar{border-right:0;padding:22px 0 0!important}}
+
+  /* Palette */
+  .palette{display:grid;grid-template-columns:2fr 2fr 1fr 1fr 1fr 1fr;gap:10px;margin-top:40px}
+  .sw{border:0;font:inherit;text-align:left;min-height:190px;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;position:relative;border-radius:10px;transition:transform .3s var(--ease)}
+  .sw:hover{transform:translateY(-6px)}
+  .sw b{font-family:'Bebas Neue';font-weight:400;font-size:24px;line-height:1}
+  .sw span{font-size:12px;opacity:.85}
+  .sw i{font-style:normal;position:absolute;top:14px;left:16px;font-size:12px;font-weight:700}
+  .sw .ok{position:absolute;top:14px;right:14px;font-size:11px;font-weight:700;opacity:0;transition:opacity .25s}
+  .sw.copied .ok{opacity:1}
+  @media (max-width:860px){.palette{grid-template-columns:1fr 1fr}.sw{min-height:110px}}
+
+  /* Typo */
+  .types{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);margin-top:40px}
+  .types div{padding:26px 22px 0 0}
+  .types .s{font-size:clamp(46px,5vw,76px);line-height:1;color:#fff}
+  .types small{display:block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-top:10px}
+  @media (max-width:860px){.types{grid-template-columns:1fr}}
+
+  /* Site web */
+  .site{background:var(--cream);color:var(--ink)}
+  .site h2{color:var(--ink)} .site .lead{color:#4d463c} .site .eyebrow{color:#c25a00}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:40px 0 0;counter-reset:s;list-style:none}
+  .steps li{background:#fff;border-radius:12px;padding:18px 16px;box-shadow:0 0 0 1px rgba(17,17,17,.08);position:relative}
+  .steps li::before{counter-increment:s;content:"0" counter(s);display:block;font-family:'Bebas Neue';font-size:34px;line-height:1;color:var(--brand)}
+  .steps b{display:block;font-size:15px;margin-top:6px}
+  .steps span{font-size:13px;color:#6b6358}
+  @media (max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+  .browser{margin-top:40px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(17,17,17,.12),0 40px 80px -40px rgba(60,30,0,.45)}
+  .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#ECE3D4;border-bottom:1px solid rgba(17,17,17,.08)}
+  .bar i{width:11px;height:11px;border-radius:50%;background:#d6cbb9}
+  .bar i:nth-child(1){background:#ff5f57}.bar i:nth-child(2){background:#febc2e}.bar i:nth-child(3){background:#28c840}
+  .bar span{flex:1;margin-left:10px;background:#fff;border-radius:999px;padding:4px 14px;font-size:12px;color:#6b6358;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar a{font-size:12px;font-weight:700;text-decoration:none;color:#c25a00;white-space:nowrap}
+  .browser .frame{border-radius:0;box-shadow:none}
+  .site .frame{box-shadow:0 0 0 1px rgba(17,17,17,.1)}
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:50px;border-top:1px solid rgba(17,17,17,.15)}
+  .feat div{padding-top:22px}
+  .feat b{display:block;font-family:'Bebas Neue';font-weight:400;font-size:28px;line-height:1}
+  .feat p{font-size:15px;color:#4d463c;margin-top:6px}
+  @media (max-width:860px){.feat{grid-template-columns:1fr}}
+
+  /* Admin */
+  .admin .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0 0}
+  .admin .tabs span{font-size:13px;padding:8px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);color:var(--ash)}
+  .proto{margin-top:40px;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 50px 100px -40px rgba(255,121,0,.25)}
+  .proto .bar{background:#1b1b1b;border-color:var(--line)}
+  .proto .bar i{background:#333}
+  .proto .bar span{background:#0c0c0c;color:var(--mute)}
+  .proto .bar a{color:var(--brand)}
+  .proto iframe{display:block;width:100%;height:min(820px,86vh);border:0;background:var(--ink)}
+  .hint{display:flex;gap:10px;align-items:center;margin-top:16px;font-size:14px;color:var(--mute)}
+  .hint b{color:var(--brand);font-weight:600}
+  @media (max-width:760px){.proto iframe{height:640px}}
+
+  .next{text-align:center;padding:clamp(100px,14vw,180px) var(--pad);border-top:1px solid var(--line)}
+  .next small{font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--mute)}
+  .next a.big{display:block;text-decoration:none;font-family:'Bebas Neue';font-size:clamp(60px,10vw,160px);line-height:.9;margin:18px 0 36px;color:#fff;transition:color .25s}
+  .next a.big:hover{color:var(--brand)}
+
+  .lb{position:fixed;inset:0;background:rgba(10,10,10,.96);z-index:80;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}
+  .lb.on{opacity:1;pointer-events:auto}
+  .lb header{display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad)}
+  .lb .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:0 var(--pad);min-height:0}
+  .lb .stage img{max-height:100%;max-width:100%;object-fit:contain}
+  .lb .ctrl{display:flex;justify-content:center;gap:14px;align-items:center;padding:18px;color:#bbb;font-size:14px}
+  .lb button{width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(244,233,216,.35);background:transparent;color:var(--cream);font-size:18px;cursor:pointer}
+  .lb button:hover{background:var(--brand);border-color:var(--brand);color:var(--ink)}
+
+  .reveal{opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<nav id="nav" aria-label="Navigation du projet">
+  <a class="back" href="../#work">← Retour aux projets</a>
+  <a href="../" class="copy">© Anas Zouabi</a>
+</nav>
+
+<header class="hero">
+  <div>
+    <p class="eyebrow">Identité · UI Design · Prototype</p>
+    <p class="logo" role="heading" aria-level="1">Lou Coif</p>
+    <p class="bs">BARBER STUDIO</p>
+    <p class="tag">More than a haircut.</p>
+    <p class="sub">L'univers complet d'un barber studio urbain : le brand book, le site de réservation en ligne et l'interface d'administration du gérant.</p>
+    <div class="ctas">
+      <a class="btn" href="#admin">Tester l'admin</a>
+      <a class="btn ghost" href="https://www.lou-coif.workers.dev" target="_blank" rel="noopener">Visiter le site ↗</a>
+    </div>
+  </div>
+  <div class="shot"><div class="frame"><img class="zoom" src="../assets/img/lc1.jpg" alt="Couverture du brand book Lou Coif" data-cap="Brand book — couverture" width="1800" height="1199"></div></div>
+  <div class="meta">
+    <div><small>Projet</small><p>Barber studio<br>en Tunisie</p></div>
+    <div><small>Rôle</small><p>Direction artistique,<br>UI Design, intégration</p></div>
+    <div><small>Livrables</small><p>Brand book, site web,<br>espace d'administration</p></div>
+    <div><small>Année</small><p>2026</p></div>
+  </div>
+</header>
+
+<!-- 01 ADN -->
+<section style="padding-top:40px">
+  <div class="wrap">
+    <p class="eyebrow">01 · L'ADN de la marque</p>
+    <h2 class="reveal">Style, précision,<br><em>caractère</em></h2>
+    <p class="lead">Une signature visuelle masculine, urbaine et affirmée. Lou Coif mélange l'élégance du lettrage gothique et l'énergie du graffiti pour parler à une clientèle jeune et exigeante.</p>
+    <p class="quote reveal">Same style, <span>different cut.</span></p>
+    <div class="pillars">
+      <div class="pillar"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 27h26M6 27l-2-15 8 6 6-10 6 10 8-6-2 15"/></svg><b>Style</b><p>Une identité reconnaissable au premier regard.</p></div>
+      <div class="pillar"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="10"/><circle cx="18" cy="18" r="3"/><path d="M18 3v6M18 27v6M3 18h6M27 18h6"/></svg><b>Précision</b><p>Le souci du détail, de la coupe à l'écran.</p></div>
+      <div class="pillar"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M20 3 8 20h9l-2 13 12-17h-9z"/></svg><b>Caractère</b><p>Une personnalité forte, sans compromis.</p></div>
+      <div class="pillar"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M4 18l6-6 5 3 5-4 6 5 6-1M8 22l4 4 4-2 4 4 6-6"/></svg><b>Confiance</b><p>Une expérience professionnelle et rassurante.</p></div>
+    </div>
+    <div class="frame" style="margin-top:50px"><img class="zoom" src="../assets/img/lc2.jpg" alt="Brand DNA : vision, piliers et personnalité de marque" data-cap="Brand DNA" loading="lazy" width="1800" height="1199"></div>
+  </div>
+</section>
+
+<!-- 02 Logo -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">02 · Logotype</p>
+    <h2 class="reveal">Un blackletter<br><em>sur mesure</em></h2>
+    <p class="lead">Le lettrage gothique donne au studio son allure de tatoueur ou d'enseigne vintage. Il se décline en version horizontale, monogramme « LC » et avatar pour les réseaux, avec une zone de protection et une taille minimale définies.</p>
+    <div class="frame" style="margin-top:40px"><img class="zoom" src="../assets/img/lc3.jpg" alt="Logo principal, déclinaisons, zone de protection et interdits" data-cap="Le logo et ses usages" loading="lazy" width="1800" height="1199"></div>
+  </div>
+</section>
+
+<!-- 03 Couleurs -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">03 · Palette</p>
+    <h2 class="reveal">Orange signature,<br><em>noir profond</em></h2>
+    <p class="lead">Une palette forte et contrastée, inspirée du street art et de l'affichage vintage : 60 % de noir, 25 % d'orange, 10 % de crème. Les mêmes valeurs pilotent le site et l'admin. Cliquez pour copier un code.</p>
+    <div class="palette" id="palette" role="group" aria-label="Palette de couleurs"></div>
+    <div class="frame" style="margin-top:40px"><img class="zoom" src="../assets/img/lc4.jpg" alt="Palette de couleurs officielle et proportions d'utilisation" data-cap="Palette de couleurs officielle" loading="lazy" width="1800" height="1199"></div>
+  </div>
+</section>
+
+<!-- 04 Typo & univers -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">04 · Typographie & univers</p>
+    <h2 class="reveal">Trois voix,<br><em>un seul ton</em></h2>
+    <p class="lead">Le blackletter pour la signature, Bebas Neue pour les titres et l'affichage, Montserrat pour les textes et les interfaces. Autour, un univers de graffitis, textures, pictogrammes et motifs couronne.</p>
+    <div class="types">
+      <div><p class="s" style="font-family:UnifrakturMaguntia,serif">Lou Coif</p><small>Blackletter · logo</small></div>
+      <div><p class="s disp">Coupe + barbe</p><small>Bebas Neue · titres</small></div>
+      <div><p class="s" style="font-weight:600;font-size:clamp(34px,3.4vw,52px);padding-top:8px">Montserrat</p><small>Montserrat · textes & UI</small></div>
+    </div>
+    <div class="grid2">
+      <div class="frame"><img class="zoom" src="../assets/img/lc5.jpg" alt="Typographie de marque" data-cap="Typographie de marque" loading="lazy" width="1800" height="1199"></div>
+      <div class="frame"><img class="zoom" src="../assets/img/lc6.jpg" alt="Univers graphique : graffiti, textures, pictogrammes, patterns" data-cap="Univers graphique" loading="lazy" width="1800" height="1199"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 Site web -->
+<section class="site">
+  <div class="wrap">
+    <p class="eyebrow">05 · Le site web</p>
+    <h2 class="reveal">Réserver en<br>moins d'une minute</h2>
+    <p class="lead">Un site vitrine et de prise de rendez-vous pensé d'abord pour le téléphone. Les prestations, les tarifs et les créneaux libres viennent directement de la base de données gérée depuis l'admin.</p>
+    <ol class="steps">
+      <li><b>Prestation</b><span>Coupe, fade, barbe…</span></li>
+      <li><b>Date</b><span>Jours ouverts uniquement</span></li>
+      <li><b>Horaire</b><span>Créneaux réellement libres</span></li>
+      <li><b>Informations</b><span>Nom et téléphone</span></li>
+      <li><b>Confirmation</b><span>Récapitulatif + référence</span></li>
+    </ol>
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><span>lou-coif.workers.dev</span><a href="https://www.lou-coif.workers.dev" target="_blank" rel="noopener">Ouvrir le site ↗</a></div>
+      <div class="frame"><img class="zoom" src="../assets/img/lc-site-home.jpg" alt="Page d'accueil du site Lou Coif" data-cap="Site web — accueil" loading="lazy" width="1440" height="900"></div>
+    </div>
+    <div class="grid2">
+      <div class="frame"><img class="zoom" src="../assets/img/lc-site-services.jpg" alt="Section prestations et tarifs du site" data-cap="Site web — prestations & tarifs" loading="lazy" width="1440" height="900"></div>
+      <div class="frame"><img class="zoom" src="../assets/img/lc-site-resa.jpg" alt="Réservation, étape 1 : choix de la prestation" data-cap="Site web — réservation, étape 1" loading="lazy" width="1440" height="615"></div>
+    </div>
+    <div class="frame" style="margin-top:24px"><img class="zoom" src="../assets/img/lc7.jpg" alt="Maquettes du site sur ordinateur et mobile" data-cap="Maquettes du site" loading="lazy" width="1800" height="1199"></div>
+    <div class="feat">
+      <div><b>Mobile first</b><p>Gros boutons, étapes courtes, aucune création de compte.</p></div>
+      <div><b>Toujours à jour</b><p>Tarifs, horaires et créneaux modifiés depuis l'admin, visibles tout de suite.</p></div>
+      <div><b>Fiable</b><p>Pas de double réservation, protection anti-spam, notifications au gérant.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 Admin -->
+<section class="admin" id="admin">
+  <div class="wrap">
+    <p class="eyebrow">06 · Prototype interactif</p>
+    <h2 class="reveal">L'espace<br><em>administration</em></h2>
+    <p class="lead">Le tableau de bord du gérant : rendez-vous du jour, agenda par poste, validation ou annulation en un geste, tarifs et horaires modifiables. Le prototype ci-dessous reprend l'interface réelle avec des données fictives : cliquez partout.</p>
+    <div class="tabs" aria-label="Pages du prototype">
+      <span>Tableau de bord</span><span>Agenda</span><span>Réservations</span><span>Services & tarifs</span><span>Horaires</span><span>Notifications</span>
+    </div>
+    <div class="proto">
+      <div class="bar"><i></i><i></i><i></i><span>Admin Lou Coif — prototype, données fictives</span><a href="../loucoif-admin/" target="_blank" rel="noopener">Plein écran ↗</a></div>
+      <iframe src="../loucoif-admin/" title="Prototype interactif de l'administration Lou Coif" loading="lazy"></iframe>
+    </div>
+    <p class="hint"><b>À essayer :</b> confirmer un rendez-vous en attente, ouvrir l'agenda, changer un tarif. Une nouvelle réservation arrive après quelques secondes.</p>
+  </div>
+</section>
+
+<section class="next">
+  <small>Projet suivant</small>
+  <a class="big" href="../musee/">Musée Dar El Hout →</a>
+  <a class="btn ghost" href="../#gallery">Voir toutes les réalisations</a>
+</section>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image agrandie">
+  <header><p id="lb-cap"></p><button id="lb-close" aria-label="Fermer">✕</button></header>
+  <div class="stage"><img id="lb-img" alt=""></div>
+  <div class="ctrl"><button id="lb-prev" aria-label="Image précédente">←</button><span id="lb-count" aria-live="polite"></span><button id="lb-next" aria-label="Image suivante">→</button></div>
+</div>
+
+<script>
+(() => {
+  // Palette
+  const C = [['#FF7900', 'Orange signature', '#111111', '25 %'], ['#111111', 'Noir profond', '#F4E9D8', '60 %'], ['#F4E9D8', 'Crème', '#111111', '10 %'],
+             ['#FFFFFF', 'Blanc', '#111111', ''], ['#242424', 'Gris charbon', '#F4E9D8', '5 %'], ['#BDBDBD', 'Gris clair', '#111111', '']];
+  const pal = document.getElementById('palette');
+  pal.innerHTML = C.map(([h, n, fg, p]) => `<button class="sw" style="background:${h};color:${fg}${h === '#111111' || h === '#242424' ? ';box-shadow:inset 0 0 0 1px rgba(244,233,216,.15)' : ''}" data-hex="${h}" aria-label="Copier ${n}, ${h}">${p ? `<i>${p}</i>` : ''}<span class="ok">Copié ✓</span><b>${n}</b><span>${h}</span></button>`).join('');
+  pal.addEventListener('click', e => { const b = e.target.closest('.sw'); if (!b) return; try { navigator.clipboard.writeText(b.dataset.hex); } catch {} b.classList.add('copied'); setTimeout(() => b.classList.remove('copied'), 1200); });
+
+  // Visionneuse
+  const lb = document.getElementById('lb'); let list = [], idx = 0, last = null;
+  const show = () => { const it = list[idx], im = document.getElementById('lb-img'); im.src = it.src; im.alt = it.cap; document.getElementById('lb-cap').textContent = it.cap; document.getElementById('lb-count').textContent = `${idx + 1} / ${list.length}`; };
+  const open = (l, i, from) => { list = l; idx = i; last = from; show(); lb.classList.add('on'); document.body.classList.add('lock'); document.getElementById('lb-close').focus(); };
+  const close = () => { lb.classList.remove('on'); document.body.classList.remove('lock'); if (last) last.focus(); };
+  document.addEventListener('click', e => {
+    if (!e.target.classList.contains('zoom')) return;
+    const l = [...document.querySelectorAll('.zoom')].map(el => ({ src: el.src, cap: el.dataset.cap || el.alt }));
+    open(l, l.findIndex(i => i.src === e.target.src), e.target);
+  });
+  document.querySelectorAll('.zoom').forEach(el => { el.tabIndex = 0; el.setAttribute('role', 'button'); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } }); });
+  document.getElementById('lb-close').onclick = close;
+  document.getElementById('lb-prev').onclick = () => { idx = (idx - 1 + list.length) % list.length; show(); };
+  document.getElementById('lb-next').onclick = () => { idx = (idx + 1) % list.length; show(); };
+  lb.addEventListener('click', e => { if (e.target.classList.contains('stage')) close(); });
+  addEventListener('keydown', e => { if (!lb.classList.contains('on')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click(); if (e.key === 'ArrowRight') document.getElementById('lb-next').click(); });
+
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 40), { passive: true });
+  const cur = document.getElementById('cursor');
+  addEventListener('mousemove', e => { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; });
+  document.addEventListener('mouseover', e => cur.classList.toggle('big', !!e.target.closest('a,button,.zoom')));
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

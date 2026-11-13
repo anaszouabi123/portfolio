@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Lou Coif — Administration (démo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+  /* Palette officielle Lou Coif (Brand Book v1.0) — identique au vrai dashboard */
+  :root{--ink:#111;--ink2:#171717;--ink3:#1E1E1E;--cream:#F4E9D8;--ash:#BDBDBD;--mute:#8A8A8A;--brand:#FF7900;--brand-h:#FF8C24;--line:rgba(244,233,216,.10)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--ink);color:var(--cream);font-family:Montserrat,system-ui,sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+  button,input,select{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  :focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:6px}
+  svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .disp{font-family:'Bebas Neue',Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:.9}
+  .demo{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:90;background:var(--brand);color:#111;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;white-space:nowrap;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.4);pointer-events:none}
+
+  /* Logo gothique */
+  .logo{display:inline-flex;flex-direction:column;align-items:center;line-height:1;color:#fff}
+  .logo b{font-family:UnifrakturMaguntia,serif;font-weight:400;font-size:30px;line-height:.95}
+  .logo span{margin-top:4px;display:flex;align-items:center;gap:6px;font-size:7px;font-weight:600;letter-spacing:.32em;color:rgba(244,233,216,.8)}
+  .logo span::before,.logo span::after{content:"";width:12px;height:1px;background:rgba(244,233,216,.6)}
+
+  /* Navigation */
+  aside{position:fixed;inset:0 auto 0 0;width:256px;background:var(--ink2);border-right:1px solid var(--line);padding:20px;display:flex;flex-direction:column;z-index:20}
+  aside .logo{margin:6px auto 30px}
+  .nav{list-style:none;display:grid;gap:4px}
+  .nav button,.nav a{width:100%;display:flex;align-items:center;gap:12px;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:500;color:rgba(244,233,216,.75);text-decoration:none;text-align:left;transition:.2s}
+  .nav button:hover,.nav a:hover{background:rgba(244,233,216,.05);color:#fff}
+  .nav button[aria-current=page]{background:var(--brand);color:#111}
+  .nav .count{margin-left:auto;background:rgba(17,17,17,.2);border-radius:999px;font-size:11px;font-weight:700;padding:1px 8px}
+  .nav button:not([aria-current=page]) .count{background:var(--brand);color:#111}
+  .side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;display:grid;gap:4px}
+  .side-foot small{padding:8px 14px 0;color:var(--mute);font-size:12px}
+  .topbar{display:none}
+  main{padding-left:256px}
+  .wrap{max-width:1152px;margin:auto;padding:40px 32px 60px}
+  .bell{position:fixed;top:18px;right:22px;z-index:30;width:44px;height:44px;border-radius:50%;background:var(--ink2);border:1px solid var(--line);display:grid;place-items:center;color:var(--cream)}
+  .bell em{position:absolute;top:-3px;right:-3px;background:var(--brand);color:#111;font-style:normal;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+  .bell.ring svg{animation:wiggle .9s ease}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
+
+  /* Titres, panneaux */
+  .ptitle{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+  .ptitle h1{font-size:52px;color:#fff}
+  .ptitle p{color:var(--ash);margin-top:4px}
+  .ptitle p::first-letter{text-transform:uppercase}
+  .card{border-radius:20px;border:1px solid var(--line);background:var(--ink2);box-shadow:inset 0 1px 0 rgba(244,233,216,.04),0 20px 50px -25px rgba(0,0,0,.8)}
+  .h2{font-size:30px;color:#fff}
+  .btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;background:var(--brand);color:#111;transition:.2s}
+  .btn:hover{background:var(--brand-h)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--cream)}
+  .btn.ghost:hover{border-color:var(--brand)}
+
+  /* Cartes statistiques */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .stat{padding:20px;text-align:left;transition:.3s;position:relative}
+  .stat:hover{transform:translateY(-2px);border-color:rgba(255,121,0,.5)}
+  .stat svg{color:var(--mute)}
+  .stat:hover svg{color:var(--brand)}
+  .stat .v{margin-top:16px;font-family:'Bebas Neue';font-size:40px;line-height:1;color:#fff}
+  .stat .l{margin-top:4px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--ash)}
+  .stat .s{margin-top:8px;font-size:12px;color:var(--mute)}
+  .stat.accent{border-color:rgba(255,121,0,.3)}
+  .stat.accent .v,.stat.accent svg{color:var(--brand)}
+  .note{margin-top:12px;font-size:12px;color:var(--mute);display:flex;gap:6px;align-items:center}
+  .sec-h{display:flex;justify-content:space-between;align-items:flex-end;margin:36px 0 16px}
+  .link{font-weight:600;color:var(--ash);display:inline-flex;gap:4px;align-items:center}
+  .link:hover{color:var(--brand)}
+
+  /* Tableau des réservations */
+  .tbl{overflow:hidden}
+  .tbl .scroll{overflow-x:auto}
+  table{width:100%;min-width:760px;border-collapse:collapse;text-align:left}
+  thead{background:var(--ink);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+  th{padding:12px 16px;font-weight:600;border-bottom:1px solid var(--line)}
+  td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:0}
+  tbody tr{transition:background .2s}
+  tbody tr:hover{background:rgba(244,233,216,.02)}
+  td b{color:#fff;font-weight:600}
+  td .sub{color:var(--ash);font-variant-numeric:tabular-nums}
+  .mono{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+  .new{background:var(--brand);color:#111;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;margin-left:6px}
+  .badge{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;box-shadow:inset 0 0 0 1px var(--r)}
+  .st-pending{background:rgba(251,191,36,.15);color:#fde68a;--r:rgba(251,191,36,.3)}
+  .st-confirmed{background:rgba(52,211,153,.15);color:#a7f3d0;--r:rgba(52,211,153,.3)}
+  .st-cancelled{background:rgba(248,113,113,.15);color:#fecaca;--r:rgba(248,113,113,.3)}
+  .st-completed{background:rgba(56,189,248,.15);color:#bae6fd;--r:rgba(56,189,248,.3)}
+  .st-no_show{background:rgba(244,233,216,.1);color:var(--ash);--r:rgba(244,233,216,.2)}
+  .acts{display:flex;justify-content:flex-end;gap:4px}
+  .ib{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1px solid transparent;color:var(--ash);transition:.2s}
+  .ib:hover{border-color:var(--line);background:rgba(244,233,216,.05);color:#fff}
+  .ib.ok{color:#6ee7b7}.ib.no{color:#fca5a5}
+  .empty{border:1px dashed var(--line);border-radius:14px;padding:48px 24px;text-align:center}
+  .empty p{color:var(--ash);margin-top:4px}
+
+  /* Filtres */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .tabs button{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ash)}
+  .tabs button[aria-pressed=true]{background:var(--cream);color:#111;border-color:var(--cream)}
+  .search{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--ink);border-radius:14px;padding:0 14px;height:46px;max-width:360px;margin-bottom:16px}
+  .search input{flex:1;background:none;border:0;outline:none}
+
+  /* Agenda (jour) */
+  .ag-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  .ag-head .d{font-family:'Bebas Neue';font-size:30px;color:#fff;min-width:260px}
+  .ag{display:grid;grid-template-columns:64px 1fr 1fr;position:relative}
+  .ag .hcol div{height:84px;font-size:12px;color:var(--mute);border-top:1px solid var(--line);padding-top:4px}
+  .ag .post{position:relative;border-left:1px solid var(--line)}
+  .ag .post .slot{height:84px;border-top:1px solid var(--line)}
+  .ag .post h4{height:22px;margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);padding:0 10px 8px;font-weight:600}
+  .ev{position:absolute;left:8px;right:8px;border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.3;overflow:hidden;cursor:pointer;border:1px solid;transition:.2s}
+  .ev:hover{filter:brightness(1.15)}
+  .ev b{display:block;color:#fff;font-size:13px}
+  .ev.confirmed{background:rgba(255,121,0,.16);border-color:rgba(255,121,0,.45)}
+  .ev.pending{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4)}
+  .ev.completed{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.35)}
+  .ev.break{background:repeating-linear-gradient(45deg,rgba(244,233,216,.04) 0 8px,transparent 8px 16px);border-color:var(--line);color:var(--mute);cursor:default}
+  .now{position:absolute;left:64px;right:0;height:2px;background:var(--brand);z-index:2}
+  .now::before{content:"";position:absolute;left:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--brand)}
+
+  /* Services */
+  .svc{display:grid;gap:12px}
+  .svc .row{display:grid;grid-template-columns:1fr 120px 120px auto;gap:16px;align-items:center;padding:18px 20px}
+  .svc .row b{font-family:'Bebas Neue';font-size:24px;color:#fff;font-weight:400}
+  .svc .row p{color:var(--ash);font-size:13px;margin-top:2px}
+  .field{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--ink);height:44px;padding:0 12px;gap:6px}
+  .field input{width:100%;background:none;border:0;outline:none;font-weight:600;text-align:right}
+  .field span{color:var(--mute);font-size:12px}
+  .switch{width:46px;height:26px;border-radius:999px;background:var(--ink3);border:1px solid var(--line);position:relative;transition:.25s}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--mute);transition:.25s}
+  .switch[aria-checked=true]{background:var(--brand);border-color:var(--brand)}
+  .switch[aria-checked=true]::after{left:23px;background:#111}
+
+  /* Horaires */
+  .hours .row{display:grid;grid-template-columns:140px auto 1fr;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+  .hours .row:last-child{border-bottom:0}
+  .hours b{color:#fff}
+  .hours .t{color:var(--ash);font-variant-numeric:tabular-nums}
+  .hours .closed{color:var(--mute)}
+
+  /* Fenêtre détail + toast */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:80;padding:16px}
+  .modal-bg.on{display:flex}
+  .modal{width:min(480px,100%);padding:24px;animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+  @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+  .modal .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  dl div{display:flex;justify-content:space-between;gap:24px;padding:12px 0;border-bottom:1px solid var(--line)}
+  dt{color:var(--mute)} dd{color:#fff;text-align:right}
+  .mbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+  .mbtns button{height:42px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px}
+  .mbtns button:hover{border-color:var(--brand)}
+  .toast{position:fixed;right:24px;bottom:24px;z-index:95;background:var(--ink3);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:14px;padding:14px 18px;max-width:360px;box-shadow:0 20px 40px rgba(0,0,0,.5);transform:translateY(20px);opacity:0;transition:.35s;pointer-events:none}
+  .toast.on{transform:none;opacity:1}
+  .toast b{display:block;color:#fff;margin-bottom:2px}
+  .toast span{color:var(--ash);font-size:13px}
+
+  .view{display:none;animation:fade .35s ease}
+  .view.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* Mobile : barre du haut + menu plein écran (comme le vrai admin) */
+  @media (max-width:1023px){
+    aside{transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);width:100%;top:64px;border-right:0}
+    body.menu aside{transform:none}
+    aside .logo{display:none}
+    .topbar{display:flex;position:sticky;top:0;z-index:40;height:64px;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--line);background:rgba(17,17,17,.9);backdrop-filter:blur(10px)}
+    .topbar .logo b{font-size:24px}
+    .mbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center}
+    main{padding-left:0}
+    .wrap{padding:28px 16px 80px}
+    .bell{top:12px;right:68px;width:40px;height:40px;z-index:45}
+    .ptitle h1{font-size:44px}
+    .stats{grid-template-columns:1fr 1fr}
+    .stat.accent{grid-column:span 2}
+    .svc .row{grid-template-columns:1fr 1fr;row-gap:12px}
+    .svc .row>div:first-child{grid-column:1/-1}
+    .hours .row{grid-template-columns:1fr auto;}
+    .hours .row .t{grid-column:1/-1}
+    .ag{grid-template-columns:48px 1fr 1fr}
+    .now{left:48px}
+    .demo{top:auto;bottom:12px}
+    .toast{left:16px;right:16px;bottom:56px;max-width:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<p class="demo">Démo — données fictives</p>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+  <symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M7 14h10M7 18h6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3-3-9 9"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></symbol>
+  <symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></symbol>
+  <symbol id="i-cal-ok" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></symbol>
+  <symbol id="i-cal-clock" viewBox="0 0 24 24"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5M16 2v4M8 2v4M3 10h5"/><circle cx="16" cy="16" r="6"/><path d="M16 14v2l1 1"/></symbol>
+  <symbol id="i-cal-x" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M10 14l4 4M14 14l-4 4"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M3 21l1.7-5A9 9 0 1 1 8 19.3z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-hour" viewBox="0 0 24 24"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></symbol>
+</svg>
+
+<div class="topbar">
+  <span class="logo"><b>Lou Coif</b><span>BARBER STUDIO</span></span>
+  <button class="mbtn" id="mbtn" aria-label="Menu" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg></button>
+</div>
+
+<aside aria-label="Administration">
+  <span class="logo"><b>Lou Coif</b><span>BARBER STUDIO</span></span>
+  <ul class="nav" id="nav">
+    <li><button data-v="dash" aria-current="page"><svg class="i"><use href="#i-dash"/></svg>Tableau de bord</button></li>
+    <li><button data-v="agenda"><svg class="i"><use href="#i-agenda"/></svg>Agenda</button></li>
+    <li><button data-v="resa"><svg class="i"><use href="#i-cal"/></svg>Réservations <span class="count" id="nav-new">2</span></button></li>
+    <li><button data-v="svc"><svg class="i"><use href="#i-scissors"/></svg>Services &amp; tarifs</button></li>
+    <li><button data-v="hours"><svg class="i"><use href="#i-clock"/></svg>Horaires &amp; créneaux</button></li>
+    <li><button data-v="soon" data-t="Galerie"><svg class="i"><use href="#i-img"/></svg>Galerie</button></li>
+    <li><button data-v="soon" data-t="Avis clients"><svg class="i"><use href="#i-quote"/></svg>Avis clients</button></li>
+    <li><button data-v="soon" data-t="Paramètres du salon"><svg class="i"><use href="#i-set"/></svg>Paramètres du salon</button></li>
+  </ul>
+  <div class="side-foot nav">
+    <a href="https://www.lou-coif.workers.dev" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Voir le site</a>
+    <button data-v="logout"><svg class="i"><use href="#i-out"/></svg>Déconnexion</button>
+    <small>gerant@exemple.tn</small>
+  </div>
+</aside>
+
+<button class="bell" id="bell" aria-label="Notifications"><svg class="i"><use href="#i-bell"/></svg><em id="bell-n">2</em></button>
+
+<main><div class="wrap">
+
+  <!-- TABLEAU DE BORD -->
+  <section class="view on" id="v-dash">
+    <div class="ptitle"><div><h1 class="disp">Tableau de bord</h1><p id="today"></p></div></div>
+    <div class="stats" id="stats"></div>
+    <p class="note"><svg class="i" style="width:14px;height:14px"><use href="#i-hour"/></svg>CA estimé = rendez-vous en attente, confirmés et terminés (hors annulés et absents).</p>
+    <div class="sec-h"><h2 class="disp h2">Rendez-vous du jour</h2><button class="link" data-go="resa">Tout voir <svg class="i" style="width:16px;height:16px"><use href="#i-arrow"/></svg></button></div>
+    <div id="today-tbl"></div>
+  </section>
+
+  <!-- AGENDA -->
+  <section class="view" id="v-agenda">
+    <div class="ptitle"><div><h1 class="disp">Agenda</h1><p>Vue jour · 2 postes · créneaux de 15 min</p></div>
+      <button class="btn" id="add-walkin"><svg class="i"><use href="#i-plus"/></svg>Client au comptoir</button></div>
+    <div class="ag-head">
+      <button class="ib" id="ag-prev" aria-label="Jour précédent" style="border-color:var(--line)"><svg class="i"><use href="#i-left"/></svg></button>
+      <button class="ib" id="ag-next" aria-label="Jour suivant" style="border-color:var(--line)"><svg class="i"><use href="#i-right"/></svg></button>
+      <span class="d" id="ag-date"></span>
+      <button class="btn ghost" id="ag-today" style="height:38px">Aujourd'hui</button>
+    </div>
+    <div class="card" style="padding:16px 12px 8px;overflow:auto;max-height:640px"><div class="ag" id="ag"></div></div>
+  </section>
+
+  <!-- RÉSERVATIONS -->
+  <section class="view" id="v-resa">
+    <div class="ptitle"><div><h1 class="disp">Réservations</h1><p>Toutes les demandes, en temps réel.</p></div></div>
+    <div class="tabs" id="r-tabs">
+      <button aria-pressed="true" data-f="upcoming">À venir</button>
+      <button aria-pressed="false" data-f="pending">En attente</button>
+      <button aria-pressed="false" data-f="all">Toutes</button>
+      <button aria-pressed="false" data-f="cancelled">Annulées</button>
+    </div>
+    <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="r-q" placeholder="Nom, téléphone ou référence…" autocomplete="off"></label>
+    <div id="r-tbl"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="view" id="v-svc">
+    <div class="ptitle"><div><h1 class="disp">Services &amp; tarifs</h1><p>Les modifications sont visibles immédiatement sur le site.</p></div></div>
+    <div class="svc" id="svc"></div>
+  </section>
+
+  <!-- HORAIRES -->
+  <section class="view" id="v-hours">
+    <div class="ptitle"><div><h1 class="disp">Horaires &amp; créneaux</h1><p>Horaires d'ouverture, pauses et fermetures exceptionnelles.</p></div></div>
+    <div class="card hours" id="hours"></div>
+  </section>
+
+  <!-- AUTRES PAGES -->
+  <section class="view" id="v-soon">
+    <div class="ptitle"><div><h1 class="disp" id="soon-t">Galerie</h1><p>Page présente dans la vraie application.</p></div></div>
+    <div class="empty card"><p class="disp" style="font-size:26px;color:#fff">Non incluse dans la démo</p><p>Cette section existe dans l'application réelle (gestion des photos, avis et paramètres du salon).</p></div>
+  </section>
+</div></main>
+
+<div class="modal-bg" id="mb"><div class="card modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="top"><h3 class="disp" id="m-t" style="font-size:28px;color:#fff"></h3><button class="ib" id="m-x" aria-label="Fermer"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <dl id="m-dl"></dl>
+  <div class="mbtns"><button><svg class="i"><use href="#i-phone"/></svg>Appeler</button><button><svg class="i"><use href="#i-wa"/></svg>WhatsApp</button></div>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"><b id="t-b"></b><span id="t-s"></span></div>
+
+<script>
+(() => {
+  // ---------- Données fictives ----------
+  const SERVICES = [
+    { id: 1, name: 'Coupe classique', desc: 'Ciseaux et tondeuse, shampoing et coiffage inclus.', price: 6, dur: 30, on: true },
+    { id: 2, name: 'Dégradé / Fade', desc: 'Low, mid ou high fade, contours nets.', price: 10, dur: 40, on: true },
+    { id: 3, name: 'Taille de barbe', desc: 'Tracé au rasoir et soin hydratant.', price: 5, dur: 20, on: true },
+    { id: 4, name: 'Coupe + barbe', desc: 'La formule complète, finitions au rasoir.', price: 15, dur: 50, on: true },
+    { id: 5, name: 'Rasage traditionnel', desc: 'Serviette chaude et coupe-chou.', price: 10, dur: 30, on: true },
+  ];
+  const HOURS = [['Lundi', '09:00', '20:00', '13:00–14:00'], ['Mardi', '09:00', '20:00', '13:00–14:00'], ['Mercredi', '09:00', '20:00', '13:00–14:00'], ['Jeudi', '09:00', '20:00', '13:00–14:00'], ['Vendredi', '09:00', '20:00', '13:00–14:30'], ['Samedi', '09:00', '21:00', null], ['Dimanche', null, null, null]];
+  const NAMES = ['Yassine B.', 'Mehdi K.', 'Amine T.', 'Karim S.', 'Walid H.', 'Omar F.', 'Skander M.', 'Rayen J.', 'Ilyes A.', 'Nizar C.', 'Hamza D.', 'Sami R.', 'Fares Z.', 'Ayoub L.'];
+  const DAY = 864e5, T0 = new Date(); T0.setHours(0, 0, 0, 0);
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const addD = n => new Date(T0.getTime() + n * DAY);
+  const toMin = t => +t.slice(0, 2) * 60 + +t.slice(3);
+  const toT = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  let seq = 1;
+  const mk = (dOff, start, sid, name, status, post, seen = true) => {
+    const s = SERVICES.find(x => x.id === sid);
+    return { id: seq++, date: iso(addD(dOff)), start, end: toT(toMin(start) + s.dur), sid, service: s.name, price: s.price, name, phone: `+216 2${seq % 10} ${String(100 + seq * 37).slice(-3)} ${String(200 + seq * 53).slice(-3)}`, status, post, seen, ref: 'LC-' + (4800 + seq * 7).toString(36).toUpperCase() };
+  };
+  let B = [
+    mk(0, '09:30', 2, NAMES[0], 'completed', 1), mk(0, '10:15', 1, NAMES[1], 'completed', 2), mk(0, '11:00', 4, NAMES[2], 'confirmed', 1),
+    mk(0, '14:00', 3, NAMES[3], 'confirmed', 2), mk(0, '15:30', 2, NAMES[4], 'pending', 1, false), mk(0, '17:00', 5, NAMES[5], 'confirmed', 2),
+    mk(0, '18:15', 1, NAMES[6], 'pending', 1, false),
+    mk(1, '10:00', 2, NAMES[7], 'confirmed', 1), mk(1, '11:30', 4, NAMES[8], 'confirmed', 2), mk(1, '16:00', 1, NAMES[9], 'pending', 1),
+    mk(2, '09:45', 3, NAMES[10], 'confirmed', 1), mk(2, '14:30', 2, NAMES[11], 'confirmed', 2), mk(3, '12:00', 5, NAMES[12], 'confirmed', 1),
+    mk(-1, '10:00', 2, NAMES[13], 'completed', 1), mk(-1, '15:00', 1, NAMES[3], 'no_show', 2), mk(-2, '11:00', 4, NAMES[0], 'cancelled', 1),
+  ];
+  const ST = { pending: 'En attente', confirmed: 'Confirmé', cancelled: 'Annulé', completed: 'Terminé', no_show: 'Absent' };
+  const $ = s => document.querySelector(s);
+  const fmtLong = d => d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const fmtShort = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }); };
+  const DT = n => n.toLocaleString('fr-FR') + ' DT';
+  const ic = id => `<svg class="i"><use href="#${id}"/></svg>`;
+
+  // ---------- Toast ----------
+  let tt; const toast = (b, s) => { $('#t-b').textContent = b; $('#t-s').textContent = s || ''; $('#toast').classList.add('on'); clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('on'), 2600); };
+
+  // ---------- Navigation ----------
+  const go = v => {
+    if (v === 'logout') return toast('Démo', 'La déconnexion est désactivée dans la démo.');
+    document.querySelectorAll('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v));
+    document.querySelectorAll('#nav button').forEach(b => b.toggleAttribute('aria-current', false));
+    document.body.classList.remove('menu'); $('#mbtn').setAttribute('aria-expanded', 'false');
+    scrollTo({ top: 0 });
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-v],[data-go]'); if (!b) return;
+    const v = b.dataset.v || b.dataset.go;
+    if (v === 'soon') $('#soon-t').textContent = b.dataset.t;
+    go(v);
+    const navBtn = document.querySelector(`#nav [data-v="${v}"]${v === 'soon' ? `[data-t="${b.dataset.t}"]` : ''}`);
+    if (navBtn) navBtn.setAttribute('aria-current', 'page');
+  });
+  $('#mbtn').onclick = () => { const o = document.body.classList.toggle('menu'); $('#mbtn').setAttribute('aria-expanded', o); };
+
+  // ---------- Tableau de bord ----------
+  const today = iso(T0);
+  function renderStats() {
+    const active = B.filter(b => !['cancelled', 'no_show'].includes(b.status));
+    const up = B.filter(b => b.date >= today && ['pending', 'confirmed'].includes(b.status));
+    const month = active.filter(b => b.date.slice(0, 7) === today.slice(0, 7));
+    const cards = [
+      ['Réservations totales', B.length, 'i-list', '', 'all'],
+      ["Aujourd'hui", B.filter(b => b.date === today).length, 'i-cal-ok', '', 'upcoming'],
+      ['À venir', up.length, 'i-cal-clock', up.filter(b => b.status === 'pending').length + ' en attente', 'upcoming'],
+      ['Annulées', B.filter(b => b.status === 'cancelled').length, 'i-cal-x', '', 'cancelled'],
+      ['CA estimé', DT(active.reduce((s, b) => s + b.price, 0)), 'i-wallet', 'Ce mois : ' + DT(month.reduce((s, b) => s + b.price, 0)), 'all', true],
+    ];
+    $('#stats').innerHTML = cards.map(([l, v, i, s, f, a]) => `<button class="card stat ${a ? 'accent' : ''}" data-go="resa" data-f="${f}"><svg class="i" style="width:20px;height:20px"><use href="#${i}"/></svg><p class="v">${v}</p><p class="l">${l}</p>${s ? `<p class="s">${s}</p>` : ''}</button>`).join('');
+  }
+  $('#stats').addEventListener('click', e => { const c = e.target.closest('[data-f]'); if (c) setTimeout(() => setFilter(c.dataset.f), 0); });
+
+  // ---------- Tableau des réservations ----------
+  const row = b => `<tr>
+      <td style="white-space:nowrap"><b style="text-transform:capitalize">${fmtShort(b.date)}</b><p class="sub">${b.start} – ${b.end}</p></td>
+      <td><b>${b.name}</b>${b.seen ? '' : '<span class="new">Nouveau</span>'}<p class="sub">${b.phone}</p></td>
+      <td><span style="color:#fff">${b.service}</span><p class="sub">${DT(b.price)} · <span class="mono">${b.ref}</span></p></td>
+      <td><span class="badge st-${b.status}">${ST[b.status]}</span></td>
+      <td><div class="acts">
+        ${b.status === 'pending' ? `<button class="ib ok" data-a="confirm" data-id="${b.id}" aria-label="Confirmer ${b.name}" title="Confirmer">${ic('i-check')}</button>` : ''}
+        ${['pending', 'confirmed'].includes(b.status) ? `<button class="ib no" data-a="cancel" data-id="${b.id}" aria-label="Annuler ${b.name}" title="Annuler">${ic('i-x')}</button>` : ''}
+        <button class="ib" data-a="view" data-id="${b.id}" aria-label="Détails ${b.name}" title="Détails">${ic('i-eye')}</button>
+      </div></td></tr>`;
+  const table = (list, empty) => list.length ? `<div class="card tbl"><div class="scroll"><table><thead><tr><th>Date &amp; heure</th><th>Client</th><th>Prestation</th><th>Statut</th><th style="text-align:right">Actions</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div></div>`
+    : `<div class="empty"><p class="disp" style="font-size:26px;color:#fff">${empty}</p><p>Les nouvelles réservations apparaîtront ici automatiquement.</p></div>`;
+  let filter = 'upcoming', q = '';
+  function setFilter(f) { filter = f; document.querySelectorAll('#r-tabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === f)); renderResa(); }
+  function renderResa() {
+    let l = B.slice();
+    if (filter === 'upcoming') l = l.filter(b => b.date >= today && ['pending', 'confirmed'].includes(b.status));
+    if (filter === 'pending') l = l.filter(b => b.status === 'pending');
+    if (filter === 'cancelled') l = l.filter(b => b.status === 'cancelled');
+    if (q) l = l.filter(b => (b.name + b.phone + b.ref).toLowerCase().includes(q));
+    l.sort((a, b) => filter === 'all' ? (b.date + b.start).localeCompare(a.date + a.start) : (a.date + a.start).localeCompare(b.date + b.start));
+    $('#r-tbl').innerHTML = table(l, 'Aucune réservation');
+  }
+  $('#r-tabs').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (b) setFilter(b.dataset.f); });
+  $('#r-q').addEventListener('input', e => { q = e.target.value.trim().toLowerCase(); renderResa(); });
+
+  // Actions
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-a]'); if (!a) return;
+    const b = B.find(x => x.id == a.dataset.id); b.seen = true;
+    if (a.dataset.a === 'confirm') { b.status = 'confirmed'; toast('Rendez-vous confirmé', `${b.name} · ${b.service} à ${b.start}`); }
+    if (a.dataset.a === 'cancel') { b.status = 'cancelled'; toast('Rendez-vous annulé', `${b.name} a été prévenu (démo : aucun message envoyé).`); }
+    if (a.dataset.a === 'view') openDetail(b);
+    renderAll();
+  });
+  function openDetail(b) {
+    $('#m-t').textContent = 'Réservation ' + b.ref;
+    $('#m-dl').innerHTML = [['Statut', `<span class="badge st-${b.status}">${ST[b.status]}</span>`], ['Prestation', `${b.service} · ${DT(b.price)}`], ['Date', `<span style="text-transform:capitalize">${fmtShort(b.date)}</span> · ${b.start} – ${b.end}`], ['Poste', 'Poste ' + b.post], ['Client', b.name], ['Téléphone', b.phone]]
+      .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+    $('#mb').classList.add('on'); $('#m-x').focus();
+  }
+  const closeM = () => $('#mb').classList.remove('on');
+  $('#m-x').onclick = closeM; $('#mb').addEventListener('click', e => { if (e.target.id === 'mb') closeM(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeM(); });
+  document.querySelectorAll('.mbtns button').forEach(x => x.onclick = () => toast('Démo', 'Les appels et messages sont désactivés dans la démo.'));
+
+  // ---------- Agenda ----------
+  let agDay = 0;
+  function renderAgenda() {
+    const d = addD(agDay), k = iso(d), wd = (d.getDay() + 6) % 7, H = HOURS[wd];
+    $('#ag-date').textContent = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const open = H[1] ? toMin(H[1]) : 9 * 60, close = H[2] ? toMin(H[2]) : 20 * 60;
+    const PX = 1.4, top = m => (m - open) * PX + 22;
+    let hcol = '<div class="hcol" style="padding-top:22px">'; for (let m = open; m < close; m += 60) hcol += `<div>${toT(m)}</div>`; hcol += '</div>';
+    const post = p => {
+      let h = `<div class="post" style="height:${(close - open) * PX + 22}px"><h4>Poste ${p}</h4>`;
+      for (let m = open; m < close; m += 60) h += `<div class="slot"></div>`;
+      if (H[3]) { const [a, z] = H[3].split('–').map(toMin); h += `<div class="ev break" style="top:${top(a)}px;height:${(z - a) * PX}px">Pause</div>`; }
+      B.filter(b => b.date === k && b.post === p && !['cancelled'].includes(b.status)).forEach(b => {
+        h += `<div class="ev ${b.status === 'no_show' ? 'completed' : b.status}" data-a="view" data-id="${b.id}" style="top:${top(toMin(b.start))}px;height:${(toMin(b.end) - toMin(b.start)) * PX - 4}px"><b>${b.start} · ${b.name}</b>${b.service}</div>`;
+      });
+      return h + '</div>';
+    };
+    const closed = !H[1];
+    $('#ag').innerHTML = closed ? `<div class="empty" style="grid-column:1/-1"><p class="disp" style="font-size:26px;color:#fff">Salon fermé</p><p>Aucun créneau ce jour-là.</p></div>` : hcol + post(1) + post(2);
+    if (!closed && agDay === 0) { const n = new Date(), m = n.getHours() * 60 + n.getMinutes(); if (m > open && m < close) $('#ag').insertAdjacentHTML('beforeend', `<div class="now" style="top:${top(m)}px"></div>`); }
+  }
+  $('#ag-prev').onclick = () => { agDay--; renderAgenda(); };
+  $('#ag-next').onclick = () => { agDay++; renderAgenda(); };
+  $('#ag-today').onclick = () => { agDay = 0; renderAgenda(); };
+  $('#add-walkin').onclick = () => {
+    const k = iso(addD(agDay)), free = ['12:00', '12:30', '16:30', '19:00'].find(t => !B.some(b => b.date === k && b.start === t));
+    if (!free) return toast('Aucun créneau libre', 'Essayez un autre jour.');
+    B.push(mk(agDay, free, 1, 'Client au comptoir', 'confirmed', 2)); renderAll();
+    toast('Rendez-vous ajouté', `Coupe classique à ${free}, poste 2 (premier poste libre).`);
+  };
+
+  // ---------- Services ----------
+  function renderSvc() {
+    $('#svc').innerHTML = SERVICES.map(s => `<div class="card row">
+        <div><b>${s.name}</b><p>${s.desc}</p></div>
+        <label class="field"><input type="number" min="0" step="1" value="${s.price}" data-p="${s.id}" aria-label="Prix ${s.name}"><span>DT</span></label>
+        <label class="field"><input type="number" min="5" step="5" value="${s.dur}" data-d="${s.id}" aria-label="Durée ${s.name}"><span>min</span></label>
+        <button class="switch" role="switch" aria-checked="${s.on}" data-s="${s.id}" aria-label="Activer ${s.name}"></button></div>`).join('');
+  }
+  $('#svc').addEventListener('change', e => {
+    const p = e.target.dataset.p, d = e.target.dataset.d;
+    if (p) { SERVICES.find(s => s.id == p).price = +e.target.value; toast('Tarif mis à jour', 'Visible immédiatement sur le site (démo).'); }
+    if (d) { SERVICES.find(s => s.id == d).dur = +e.target.value; toast('Durée mise à jour', 'Les créneaux disponibles sont recalculés.'); }
+  });
+  $('#svc').addEventListener('click', e => {
+    const s = e.target.closest('[data-s]'); if (!s) return;
+    const sv = SERVICES.find(x => x.id == s.dataset.s); sv.on = !sv.on; s.setAttribute('aria-checked', sv.on);
+    toast(sv.on ? 'Prestation activée' : 'Prestation masquée', sv.name);
+  });
+
+  // ---------- Horaires ----------
+  $('#hours').innerHTML = HOURS.map(([d, o, c, p]) => `<div class="row"><b>${d}</b>${o ? `<span class="badge st-confirmed">Ouvert</span><span class="t">${o} – ${c}${p ? ` · pause ${p}` : ''}</span>` : `<span class="badge st-no_show">Fermé</span><span class="t closed">—</span>`}</div>`).join('');
+
+  // ---------- Notifications ----------
+  $('#bell').onclick = () => {
+    const n = B.filter(b => !b.seen); n.forEach(b => b.seen = true);
+    toast(n.length ? `${n.length} nouvelle(s) réservation(s)` : 'Aucune nouveauté', n.map(b => `${b.name} à ${b.start}`).join(' · '));
+    renderAll();
+  };
+  // Une nouvelle réservation « arrive » quelques secondes après l'ouverture de la démo
+  setTimeout(() => {
+    const k = 2; B.push(mk(0, '19:15', 2, 'Anis G.', 'pending', 2, false)); renderAll();
+    $('#bell').classList.add('ring'); setTimeout(() => $('#bell').classList.remove('ring'), 1000);
+    toast('Nouvelle réservation', 'Anis G. · Dégradé / Fade aujourd’hui à 19:15');
+  }, 6000);
+
+  function renderAll() {
+    $('#today').textContent = fmtLong(T0);
+    renderStats();
+    $('#today-tbl').innerHTML = table(B.filter(b => b.date === today).sort((a, b) => a.start.localeCompare(b.start)), "Aucun rendez-vous aujourd'hui");
+    renderResa(); renderAgenda();
+    const n = B.filter(b => !b.seen).length;
+    $('#bell-n').textContent = n; $('#bell-n').style.display = n ? '' : 'none';
+    $('#nav-new').textContent = n; $('#nav-new').style.display = n ? '' : 'none';
+  }
+  renderSvc(); renderAll();
+})();
+</script>
+</body>
+</html>
